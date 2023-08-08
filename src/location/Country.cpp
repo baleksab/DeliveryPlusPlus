@@ -44,7 +44,7 @@ void Country::displayInfo() const {
     cout << "--------------------------------------------" << endl;
 
     cout << "Information about " << getName() << ": "
-            << "\n\tID: " << getCountryID()
+            << "\n\tCountry ID: " << getCountryID()
             << "\n\tContinent: " << continentToString(getContinent())
             << "\n\tCities:\n";
 

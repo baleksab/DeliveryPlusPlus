@@ -37,7 +37,7 @@ int City::getOwnerID() const {
 }
 
 void City::displayInfo() const {
-    cout << getName() << ", ID: " << getCityID() << endl;
+    cout << getName() << ", City ID: " << getCityID() << endl;
 }
 
 vector<City *> City::getCities() {

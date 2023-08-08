@@ -11,7 +11,7 @@ using namespace std;
 
 class IDescriptive {
 public:
-    IDescriptive(const string name): name(name) {
+    IDescriptive(const string name):name(name) {
 
     }
 

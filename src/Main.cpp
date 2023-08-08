@@ -35,5 +35,6 @@ int main() {
     for (auto *city : City::getCities())
         city->displayInfo();
 
+
     return 0;
 }

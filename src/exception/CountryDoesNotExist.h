@@ -11,7 +11,7 @@ using namespace std;
 
 class CountryDoesNotExist : public exception {
     virtual const char* what() const throw() override {
-        return "Failed adding city to the country, country does not exist.";
+        return "ERROR: Specified country with given id does not exist!";
     }
 };
 

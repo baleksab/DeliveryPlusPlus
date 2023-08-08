@@ -5,8 +5,12 @@
 #ifndef DELIVERY_PATH_H
 #define DELIVERY_PATH_H
 
+#include <iostream>
+#include "../interfaces/IDescriptive.h"
 
-class Path {
+using namespace std;
+
+class Path : public IDescriptive {
 public:
     enum Type {
         ROAD,
@@ -14,6 +18,17 @@ public:
         AIR,
         WATER
     };
+
+    Path(const string, const Type, const double);
+
+    const Type getType() const;
+    const double getDistance() const;
+    void displayInfo() const override;
+    static string typeToString(const Type iType);
+private:
+    const Type type;
+    const double distance;
+    static string typeName[4];
 };
 
 
