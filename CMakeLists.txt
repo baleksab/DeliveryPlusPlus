@@ -11,9 +11,8 @@ add_executable(Delivery__
         src/node/Country.h
         src/exception/CountryDoesNotExist.h
         src/enums/Continent.h
-        src/enums/Continent.cpp
-        src/enums/Path.cpp
         src/enums/Path.h
-        src/node/Connection.cpp
-        src/node/Connection.h
+        src/enums/Path.cpp
+        src/enums/Continent.cpp
+        src/node/Node.h
 )

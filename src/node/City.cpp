@@ -4,32 +4,19 @@
 
 #include "City.h"
 #include "Country.h"
-#include "Connection.h"
 #include "../exception/CountryDoesNotExist.h"
 
-int City::_cityID = 0;
+int City::sid = 0;
 
-City::City(string name):name(name), cityID(++_cityID) {
+City::City(const string name): Node(name), cityID(++sid) {
 
 }
 
-string City::getName() {
-    return name;
-}
-
-int City::getCityID() {
-    return cityID;
-}
-
-int City::getOwnerID() {
-    return ownerID;
-}
-
-void City::setOwnerID(int countryID) {
+void City::setOwnerID(const int id) {
     bool countryExists = false;
 
     for (auto *country : Country::getCountries())
-        if (country->getCountryID() == countryID) {
+        if (country->getCountryID() == id) {
             countryExists = true;
             break;
         }
@@ -37,24 +24,17 @@ void City::setOwnerID(int countryID) {
     if (!countryExists)
         throw CountryDoesNotExist();
 
-    ownerID = countryID;
+    ownerID = id;
 }
 
-vector<Connection *> City::getConnections() {
-    return connections;
+int City::getCityID() const {
+    return cityID;
 }
 
-void City::addConnection(Connection *connection) {
-    connections.push_back(connection);
+int City::getOwnerID() const {
+    return ownerID;
 }
 
-void City::displayConnections() {
-    cout << "--------------------------------------------" << endl;
-
-    cout << name << " is connected to: " << endl;
-
-    for (auto *conn : connections)
-        conn->displayInfo();
-
-    cout << "\n--------------------------------------------" << endl;
+void City::displayInfo() const {
+    cout << getName() << ", ID: " << getCityID() << endl;
 }

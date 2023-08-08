@@ -12,14 +12,17 @@ using namespace std;
 class Path final {
 public:
     enum Type {
-        GROUND,
+        ROAD,
         WATER,
-        AIR
+        AIR,
+        RAIL
     };
 
     static string toString(Path::Type);
 private:
-    static const string pathTypes[3];
+    static const string pathTypes[4];
 };
+
+
 
 #endif //DELIVERY___PATH_H

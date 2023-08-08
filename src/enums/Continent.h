@@ -20,11 +20,9 @@ public:
         ANTARCTICA
     };
 
-    static string toString(Continent::Type continent);
+    static string toString(Continent::Type);
 private:
     static const string continentNames[6];
 };
-
-
 
 #endif //DELIVERY___CONTINENT_H

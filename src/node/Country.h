@@ -7,26 +7,25 @@
 
 #include "City.h"
 #include "../enums/Continent.h"
+#include "Node.h"
 #include <iostream>
 #include <vector>
 
-class Country {
+class Country : public Node {
 public:
     Country(string, Continent::Type);
 
-    string getName();
-    Continent::Type getContinent();
-    vector<City *> getCities();
+    Continent::Type getContinent() const;
+    vector<City *> getCities() const;
     void addCity(City *);
-    int getCountryID();
+    int getCountryID() const;
     static vector<Country *> getCountries();
-    void displayInfo();
+    void displayInfo() const override;
 private:
-    string name;
-    Continent::Type continent;
+    const Continent::Type continent;
     vector<City *> cities;
-    int countryID;
-    static int _countryID;
+    const int countryID;
+    static int sid;
     static vector<Country *> countries;
 };
 

@@ -1,13 +1,14 @@
 //
-// Created by C425 on 06/08/2023.
+// Created by c425 on 8/8/23.
 //
 
 #include "Path.h"
 
-const string Path::pathTypes[3] = {
-        "GROUND",
-        "WATER",
-        "AIR"
+const string Path::pathTypes[4] = {
+        "Road",
+        "Water",
+        "Air",
+        "Rail"
 };
 
 string Path::toString(Path::Type pathType) {

@@ -4,7 +4,6 @@
 
 #include "node/City.h"
 #include "node/Country.h"
-#include "node/Connection.h"
 #include <iostream>
 
 using namespace std;
@@ -21,9 +20,6 @@ int main() {
     srbija->addCity(noviSad);
     srbija->addCity(subotica);
 
-    Connection::create(kragujevac, beograd, "Autoput", 150, Path::Type::GROUND);
-    Connection::create(kragujevac, beograd, "Magistralni put", 180, Path::Type::GROUND);
-
     City *berlin = new City("Berlin");
     City *frankfurt = new City("Frankfurt");
     City *munich = new City("Munich");
@@ -35,9 +31,6 @@ int main() {
 
     srbija->displayInfo();
     germany->displayInfo();
-
-    kragujevac->displayConnections();
-    beograd->displayConnections();
 
     return 0;
 }

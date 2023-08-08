@@ -5,32 +5,26 @@
 #ifndef DELIVERY___CITY_H
 #define DELIVERY___CITY_H
 
+#include "Node.h"
 #include <iostream>
 #include <vector>
-
-#define UNKNOWN 0;
 
 using namespace std;
 
 class Connection;
 
-class City {
+class City : public Node {
 public:
-    City(string name);
+    City(const string);
 
-    string getName();
-    int getOwnerID();
-    int getCityID();
-    void setOwnerID(int);
-    vector<Connection *> getConnections();
-    void addConnection(Connection *connection);
-    void displayConnections();
+    void setOwnerID(const int);
+    int getOwnerID() const;
+    int getCityID() const;
+    void displayInfo() const override;
 private:
-    string name;
-    int ownerID = UNKNOWN;
-    int cityID;
-    static int _cityID;
-    vector<Connection *> connections;
+    int ownerID;
+    const int cityID;
+    static int sid;
 };
 
 
