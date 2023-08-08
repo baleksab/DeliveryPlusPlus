@@ -2,16 +2,16 @@
 // Created by c425 on 8/8/23.
 //
 
-#ifndef DELIVERY___NODE_H
-#define DELIVERY___NODE_H
+#ifndef DELIVERY___IDESCRIPTION
+#define DELIVERY___IDESCRIPTION
 
 #include <iostream>
 
 using namespace std;
 
-class Node {
+class IDescriptive {
 public:
-    Node(const string name):name(name) {
+    IDescriptive(const string name): name(name) {
 
     }
 
@@ -24,4 +24,4 @@ private:
     const string name;
 };
 
-#endif //DELIVERY___NODE_H
+#endif //DELIVERY___IDESCRIPTION

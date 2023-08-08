@@ -5,14 +5,14 @@ set(CMAKE_CXX_STANDARD 17)
 
 add_executable(Delivery__
         src/Main.cpp
-        src/node/City.cpp
-        src/node/City.h
-        src/node/Country.cpp
-        src/node/Country.h
+        src/location/City.cpp
+        src/location/City.h
+        src/location/Country.cpp
+        src/location/Country.h
         src/exception/CountryDoesNotExist.h
-        src/enums/Continent.h
-        src/enums/Path.h
-        src/enums/Path.cpp
-        src/enums/Continent.cpp
-        src/node/Node.h
+        src/interfaces/IDescriptive.h
+        src/location/Connection.cpp
+        src/location/Connection.h
+        src/location/Path.cpp
+        src/location/Path.h
 )

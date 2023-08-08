@@ -2,8 +2,8 @@
 // Created by C425 on 05/08/2023.
 //
 
-#include "node/City.h"
-#include "node/Country.h"
+#include "location/City.h"
+#include "location/Country.h"
 #include <iostream>
 
 using namespace std;
@@ -14,7 +14,7 @@ int main() {
     City *noviSad = new City("Novi Sad");
     City *subotica = new City("Subotica");
 
-    Country *srbija = new Country("Srbija", Continent::Type::EUROPE);
+    Country *srbija = new Country("Srbija", Country::Continent::EUROPE);
     srbija->addCity(kragujevac);
     srbija->addCity(beograd);
     srbija->addCity(noviSad);
@@ -24,13 +24,16 @@ int main() {
     City *frankfurt = new City("Frankfurt");
     City *munich = new City("Munich");
 
-    Country *germany = new Country("Germany", Continent::Type::EUROPE);
+    Country *germany = new Country("Germany", Country::Continent::EUROPE);
     germany->addCity(berlin);
     germany->addCity(frankfurt);
     germany->addCity(munich);
 
     srbija->displayInfo();
     germany->displayInfo();
+
+    for (auto *city : City::getCities())
+        city->displayInfo();
 
     return 0;
 }
