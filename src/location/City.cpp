@@ -20,15 +20,14 @@ const int City::getCountry() const {
 }
 
 void City::getInfo() const {
-    cout << "City " << getName() << " ( " << getId() << " ) belongs to country "
-    << Country::getCountryById(getCountry())->getName() << " ( " << getCountry() << " )" << endl;
+    cout << getName() << " ( " << Country::getCountryById(country)->getName() << " )";
 }
 
 unordered_map<int, City *> City::getCities() {
     return cities;
 }
 
-const City *City::getCityById(const int index) {
+City *City::getCityById(const int index) {
     if (!doesCityExist(index))
         throw CityDoesNotExist();
 
@@ -52,3 +51,53 @@ const bool City::doesCityExist(const int index) {
 
     return true;
 }
+
+const bool City::doesConnectionExist(const int index) const {
+    if (connections.find(index) == connections.end())
+        return false;
+
+    return true;
+}
+
+
+void City::connectTwoCities(const int city1, const int city2, Path *path) {
+    if (city1 == city2)
+        throw SameCityNotAllowed();
+
+    City *sCity = getCityById(city1);
+    City *dCity = getCityById(city2);
+
+    sCity->addConnection(city2, path);
+    dCity->addConnection(city1, path);
+}
+
+void City::addConnection(const int destination, Path *path) {
+    if (!doesConnectionExist(destination))
+        connections[destination] = vector<Path *>();
+
+    connections[destination].push_back(path);
+}
+
+void City::getConnectionsInfo() const {
+    cout << "--------------------------------------------" << endl;
+
+    getInfo();
+
+    cout << " is directly connected to: " << endl;
+
+    for (auto &it : getConnections()) {
+        cout << "\t* ";
+        City::getCityById(it.first)->getInfo();
+        cout << " by: \n";
+
+        for (auto *path : it.second)
+            cout << "\t\t- " << path->getInfo();
+    }
+
+    cout << "--------------------------------------------" << endl;
+}
+
+unordered_map<int, vector<Path *>> City::getConnections() const {
+    return connections;
+}
+

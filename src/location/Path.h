@@ -18,15 +18,13 @@ public:
         WATER
     };
 
-    Path(const int, const double, const Type);
+    Path(const double, const Type);
 
-    const int getDestination() const;
     const Type getType() const;
     const double getDistance() const;
-
+    const string getInfo() const;
     static const string typeToString(const Type);
 private:
-    const int destination;
     const Type type;
     const double distance;
     static const string typeName[4];

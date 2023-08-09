@@ -37,7 +37,8 @@ void Country::getInfo() const {
 
         for (auto *city : getCities()) {
             cout << "\t\t";
-            city->getInfo();
+            cout << city->getName();
+            cout << "\n";
         }
 
     cout << "--------------------------------------------\n" << endl;

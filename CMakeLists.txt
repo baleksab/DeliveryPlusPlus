@@ -14,4 +14,5 @@ add_executable(Delivery__
         src/exception/CityDoesNotExist.h
         src/location/Path.cpp
         src/location/Path.h
+        src/exception/SameCityNotAllowed.h
 )
