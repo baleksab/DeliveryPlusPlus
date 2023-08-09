@@ -1,16 +1,15 @@
 //
-// Created by c425 on 8/8/23.
+// Created by c425 on 8/9/23.
 //
 
-#ifndef DELIVERY_PATH_H
-#define DELIVERY_PATH_H
+#ifndef DELIVERY___PATH_H
+#define DELIVERY___PATH_H
 
 #include <iostream>
-#include "../interfaces/IDescriptive.h"
 
 using namespace std;
 
-class Path : public IDescriptive {
+class Path {
 public:
     enum Type {
         ROAD,
@@ -19,17 +18,19 @@ public:
         WATER
     };
 
-    Path(const string, const Type, const double);
+    Path(const int, const double, const Type);
 
+    const int getDestination() const;
     const Type getType() const;
     const double getDistance() const;
-    void displayInfo() const override;
-    static string typeToString(const Type iType);
+
+    static const string typeToString(const Type);
 private:
+    const int destination;
     const Type type;
     const double distance;
-    static string typeName[4];
+    static const string typeName[4];
 };
 
 
-#endif //DELIVERY_PATH_H
+#endif //DELIVERY___PATH_H

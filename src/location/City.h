@@ -1,32 +1,36 @@
 //
-// Created by C425 on 05/08/2023.
+// Created by c425 on 8/9/23.
 //
 
 #ifndef DELIVERY___CITY_H
 #define DELIVERY___CITY_H
 
-#include "../interfaces/IDescriptive.h"
+#include "Location.h"
+#include "Country.h"
+#include "../exception/CityDoesNotExist.h">
+#include <unordered_map>
 #include <iostream>
-#include <vector>
 
 using namespace std;
 
-class Connection;
+class Country;
 
-class City : public IDescriptive {
+class City : public Location {
 public:
-    City(const string);
-
-    void setOwnerID(const int);
-    int getOwnerID() const;
-    int getCityID() const;
-    void displayInfo() const override;
-    static vector<City *> getCities();
+    const int getId() const;
+    const int getCountry() const;
+    void getInfo() const;
+    static unordered_map<int, City *> getCities();
+    static const City * getCityById(const int);
+    static const int createCity(const string, const int);
+    static const bool doesCityExist(const int);
 private:
-    int ownerID;
-    const int cityID;
+    City(const string, const int);
+
+    const int id;
+    const int country;
     static int sid;
-    static vector<City *> cities;
+    static unordered_map<int, City *> cities;
 };
 
 

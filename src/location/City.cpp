@@ -1,45 +1,54 @@
 //
-// Created by C425 on 05/08/2023.
+// Created by c425 on 8/9/23.
 //
 
 #include "City.h"
-#include "Country.h"
-#include "../exception/CountryDoesNotExist.h"
 
-int City::sid = 0;
-vector<City *> City::cities;
+int City::sid = 1;
+unordered_map<int, City *> City::cities;
 
-City::City(const string name): IDescriptive(name), cityID(++sid) {
-    cities.push_back(this);
+City::City(const string name, const int country): Location(name), id(sid++), country(country) {
+
 }
 
-void City::setOwnerID(const int id) {
-    bool countryExists = false;
+const int City::getId() const {
+    return id;
+}
 
-    for (auto *country : Country::getCountries())
-        if (country->getCountryID() == id) {
-            countryExists = true;
-            break;
-        }
+const int City::getCountry() const {
+    return country;
+}
 
-    if (!countryExists)
+void City::getInfo() const {
+    cout << "City " << getName() << " ( " << getId() << " ) belongs to country "
+    << Country::getCountryById(getCountry())->getName() << " ( " << getCountry() << " )" << endl;
+}
+
+unordered_map<int, City *> City::getCities() {
+    return cities;
+}
+
+const City *City::getCityById(const int index) {
+    if (!doesCityExist(index))
+        throw CityDoesNotExist();
+
+    return cities.at(index);
+}
+
+const int City::createCity(const string name, const int countryId) {
+    if (!Country::doesCountryExist(countryId))
         throw CountryDoesNotExist();
 
-    ownerID = id;
+    City *city = new City(name, countryId);
+
+    cities.insert({city->getId(), city});
+
+    return city->getId();
 }
 
-int City::getCityID() const {
-    return cityID;
-}
+const bool City::doesCityExist(const int index) {
+    if (cities.find(index) == cities.end())
+        return false;
 
-int City::getOwnerID() const {
-    return ownerID;
-}
-
-void City::displayInfo() const {
-    cout << getName() << ", City ID: " << getCityID() << endl;
-}
-
-vector<City *> City::getCities() {
-    return cities;
+    return true;
 }
