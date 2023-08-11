@@ -4,15 +4,10 @@
 
 #include "City.h"
 
-int City::sid = 1;
 unordered_map<int, City *> City::cities;
 
-City::City(const string name, const int country): Location(name), id(sid++), country(country) {
+City::City(const string name, const int country): Entity(name), country(country) {
 
-}
-
-const int City::getId() const {
-    return id;
 }
 
 const int City::getCountry() const {
@@ -90,8 +85,9 @@ void City::getConnectionsInfo() const {
         City::getCityById(it.first)->getInfo();
         cout << " by: \n";
 
-        for (auto *path : it.second)
-            cout << "\t\t- " << path->getInfo();
+        for (auto *path : it.second) {
+            path->getInfo();
+        }
     }
 
     cout << "--------------------------------------------" << endl;
@@ -100,4 +96,3 @@ void City::getConnectionsInfo() const {
 unordered_map<int, vector<Path *>> City::getConnections() const {
     return connections;
 }
-

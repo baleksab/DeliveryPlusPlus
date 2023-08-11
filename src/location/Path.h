@@ -6,28 +6,31 @@
 #define DELIVERY___PATH_H
 
 #include <iostream>
+#include "../interface/Entity.h"
 
 using namespace std;
 
-class Path {
+class Path : public Entity {
 public:
     enum Type {
+        ALL,
         ROAD,
         RAIL,
         AIR,
         WATER
     };
 
-    Path(const double, const Type);
+    Path(const string, const double, const Type);
 
     const Type getType() const;
     const double getDistance() const;
-    const string getInfo() const;
+    void getInfo() const override;
     static const string typeToString(const Type);
 private:
+    const string name;
     const Type type;
     const double distance;
-    static const string typeName[4];
+    static const string typeName[5];
 };
 
 

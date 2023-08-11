@@ -5,7 +5,7 @@
 #ifndef DELIVERY___COUNTRY_H
 #define DELIVERY___COUNTRY_H
 
-#include "Location.h"
+#include "../interface/Entity.h"
 #include "City.h"
 #include "../exception/CountryDoesNotExist.h"
 #include <iostream>
@@ -16,7 +16,7 @@ using namespace std;
 
 class City;
 
-class Country : public Location {
+class Country : public Entity {
 public:
     enum Continent {
         EUROPE,
@@ -27,7 +27,6 @@ public:
         ANTARCTICA
     };
 
-    const int getId() const;
     const Continent getContinent() const;
     void getInfo() const;
     const vector<City *> getCities() const;
@@ -39,9 +38,7 @@ public:
 private:
     Country(const string, const Continent);
 
-    const int id;
     const Continent continent;
-    static int sid;
     static unordered_map<int, Country *> countries;
     static const string continentNames[6];
 };

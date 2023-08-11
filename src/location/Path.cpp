@@ -4,14 +4,15 @@
 
 #include "Path.h"
 
-const string Path::typeName[4] {
+const string Path::typeName[5] {
+    "All",
     "Road",
     "Rail",
     "Air",
     "Water"
 };
 
-Path::Path(const double distance, const Path::Type type):distance(distance), type(type) {
+Path::Path(const string name, const double distance, const Path::Type type):Entity(name), distance(distance), type(type) {
 
 }
 
@@ -27,6 +28,10 @@ const string Path::typeToString(const Path::Type type) {
     return typeName[type];
 }
 
-const string Path::getInfo() const {
-    return "Path via " + typeToString(getType()) + ", " + to_string(getDistance()) + " km long.\n";
+void Path::getInfo() const {
+    cout << "\t\tPath: "
+            << "\n\t\t\t- Name: " << getName()
+            << "\n\t\t\t- Type: " << typeToString(getType())
+            << "\n\t\t\t- Distance: " << getDistance()
+            << endl;
 }

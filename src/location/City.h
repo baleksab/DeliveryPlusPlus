@@ -5,7 +5,7 @@
 #ifndef DELIVERY___CITY_H
 #define DELIVERY___CITY_H
 
-#include "Location.h"
+#include "../interface/Entity.h"
 #include "Country.h"
 #include "Path.h"
 #include "../exception/CityDoesNotExist.h"
@@ -13,14 +13,15 @@
 #include <unordered_map>
 #include <vector>
 #include <iostream>
+#include <unordered_set>
+#include <algorithm>
 
 using namespace std;
 
 class Country;
 
-class City : public Location {
+class City : public Entity {
 public:
-    const int getId() const;
     const int getCountry() const;
     void getInfo() const;
     void getConnectionsInfo() const;
@@ -34,9 +35,7 @@ public:
 private:
     City(const string, const int);
 
-    const int id;
     const int country;
-    static int sid;
     unordered_map<int, vector<Path *>> connections;
     static unordered_map<int, City *> cities;
 

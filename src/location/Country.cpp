@@ -4,7 +4,6 @@
 
 #include "Country.h"
 
-int Country::sid = 1;
 unordered_map<int, Country *> Country::countries;
 const string Country::continentNames[] = {
         "Europe",
@@ -15,12 +14,8 @@ const string Country::continentNames[] = {
         "Antarctica"
 };
 
-Country::Country(const string name, const Continent continent):Location(name), continent(continent), id(sid++) {
+Country::Country(const string name, const Continent continent): Entity(name), continent(continent) {
 
-}
-
-const int Country::getId() const {
-    return id;
 }
 
 const Country::Continent Country::getContinent() const {
