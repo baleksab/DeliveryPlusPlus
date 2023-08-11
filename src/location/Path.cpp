@@ -32,6 +32,6 @@ void Path::getInfo() const {
     cout << "\t\tPath: "
             << "\n\t\t\t- Name: " << getName()
             << "\n\t\t\t- Type: " << typeToString(getType())
-            << "\n\t\t\t- Distance: " << getDistance()
+            << "\n\t\t\t- Distance: " << getDistance() << " km"
             << endl;
 }

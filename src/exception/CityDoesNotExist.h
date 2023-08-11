@@ -10,6 +10,7 @@
 using namespace std;
 
 class CityDoesNotExist : public exception {
+public:
     virtual const char* what() const throw() override {
         return "ERROR: Specified city with given id does not exist!";
     }

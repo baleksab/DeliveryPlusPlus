@@ -10,6 +10,7 @@
 using namespace std;
 
 class SameCityNotAllowed : public exception {
+public:
     virtual const char* what() const throw() override {
         return "ERROR: City can not be connected to itself!";
     }

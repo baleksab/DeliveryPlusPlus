@@ -18,4 +18,5 @@ add_executable(Delivery__
         src/location/PathSolver.cpp
         src/location/PathSolver.h
         src/interface/Entity.cpp
+        src/exception/CityNotReachable.h
 )

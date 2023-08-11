@@ -14,6 +14,7 @@ int main() {
     /* Creating Serbia */
 
     const int SERBIA = Country::createCountry("Serbia", Country::Continent::EUROPE);
+
     const int KRAGUJEVAC = City::createCity("Kragujevac", SERBIA);
     const int BELGRADE = City::createCity("Beograd", SERBIA);
     const int NOVI_SAD = City::createCity("Novi Sad", SERBIA);
@@ -57,8 +58,15 @@ int main() {
 
     City::getCityById(KRAGUJEVAC)->getConnectionsInfo();
 
-    PathSolver kragujevacSolver(KRAGUJEVAC, Path::Type::ROAD);
-    kragujevacSolver.reconstructPath(BELGRADE);
+    PathSolver kragujevacSolver(KRAGUJEVAC, Path::Type::ALL);
+
+    try {
+        kragujevacSolver.getPathTo(BELGRADE);
+        kragujevacSolver.getPathTo(WASHINGTON);
+    } catch (CityNotReachable err) {
+        cout << err.what() << endl;
+    }
+
 
     return 0;
 }
