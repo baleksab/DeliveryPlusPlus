@@ -13,6 +13,11 @@ using namespace std;
 
 class CityNotReachable : public exception {
 public:
+
+    CityNotReachable(const int source, const int destination):source(source), destination(destination) {
+        error_msg = "ERROR: " + City::getCityById(destination)->getName() + " is not reachable from "
+                    + City::getCityById(source)->getName() + " by any path type!";
+    }
     CityNotReachable(const int source, const int destination, const Path::Type type):type(type), source(source), destination(destination) {
         error_msg = "ERROR: " + City::getCityById(destination)->getName() + " is not reachable from "
                     + City::getCityById(source)->getName() + " by " + Path::typeToString(type) + "!";
@@ -24,7 +29,7 @@ public:
 private:
     const int source;
     const int destination;
-    const Path::Type type;
+    Path::Type type;
     string error_msg;
 };
 

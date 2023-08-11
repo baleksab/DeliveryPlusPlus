@@ -4,8 +4,7 @@
 
 #include "Path.h"
 
-const string Path::typeName[5] {
-    "All",
+const string Path::typeName[4] {
     "Road",
     "Rail",
     "Air",

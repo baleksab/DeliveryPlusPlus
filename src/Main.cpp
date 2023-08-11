@@ -58,11 +58,10 @@ int main() {
 
     City::getCityById(KRAGUJEVAC)->getConnectionsInfo();
 
-    PathSolver kragujevacSolver(KRAGUJEVAC, Path::Type::ALL);
+    PathSolver kragujevacSolver(KRAGUJEVAC);
 
     try {
-        kragujevacSolver.getPathTo(BELGRADE);
-        kragujevacSolver.getPathTo(WASHINGTON);
+        kragujevacSolver.getBestPathTo(WASHINGTON);
     } catch (CityNotReachable err) {
         cout << err.what() << endl;
     }

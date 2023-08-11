@@ -13,7 +13,6 @@ using namespace std;
 class Path : public Entity {
 public:
     enum Type {
-        ALL,
         ROAD,
         RAIL,
         AIR,
@@ -30,7 +29,7 @@ private:
     const string name;
     const Type type;
     const double distance;
-    static const string typeName[5];
+    static const string typeName[4];
 };
 
 
