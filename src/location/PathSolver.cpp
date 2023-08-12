@@ -85,20 +85,20 @@ void PathSolver::getPathTo(const int destinationCity, const Path::Type type) {
         City::getCityById(destinationCity)->getInfo();
         cout << " is impossible to reach from ";
         City::getCityById(startingCity)->getInfo();
-        cout << "by " << Path::typeToString(type) << endl;
+        cout << " by " << Path::typeToString(type) << endl;
     } else {
         cout << "Going from ";
         City::getCityById(startingCity)->getInfo();
         cout << " to ";
         City::getCityById(destinationCity)->getInfo();
-        cout << " by " << Path::typeToString(type);
+        cout << " by " << Path::typeToString(type) << endl;
 
         reconstructPath(type, destinationCity);
 
-        cout << "Destination reached! Total distance: " << allDistances[type][destinationCity] << " km";
+        cout << "Destination reached! Total distance: " << allDistances[type][destinationCity] << " km\n";
     }
 
-    cout << "\n--------------------------------------------" << endl;
+    cout << "--------------------------------------------" << endl;
 }
 
 void PathSolver::getBestPathTo(const int destinationCity) {
@@ -118,10 +118,10 @@ void PathSolver::getBestPathTo(const int destinationCity) {
 
         reconstructPath(ALL_PATH_TYPES, destinationCity);
 
-        cout << "Destination reached! Total distance: " << allDistances[ALL_PATH_TYPES][destinationCity] << " km";
+        cout << "Destination reached! Total distance: " << allDistances[ALL_PATH_TYPES][destinationCity] << " km\n";
     }
 
-    cout << "\n--------------------------------------------" << endl;
+    cout << "--------------------------------------------" << endl;
 }
 
 void PathSolver::reconstructPath(const int type, const int destinationCity)  {

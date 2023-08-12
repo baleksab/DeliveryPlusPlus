@@ -21,10 +21,11 @@ public:
     const Path::Type getPathType() const;
     void getInfo() const;
 protected:
-    Vehicle(const string, const string, const double, const Path::Type);
+    Vehicle(const string, const string, const double, const double, const Path::Type);
 private:
     const string typeName;
     const double maxWeight;
+    const double costPerKM;
     double curWeight;
     const Path::Type pathType;
 };

@@ -13,13 +13,16 @@ using namespace std;
 
 class Package : public Entity {
 public:
-    Package(const string, const double);
-
+    Package(const string, const double, const int, const int);
 
     const double getWeight() const;
+    const int getSource() const;
+    const int getDestination() const;
     void getInfo() const override;
 private:
     const double weight;
+    const int source;
+    const int destination;
 };
 
 

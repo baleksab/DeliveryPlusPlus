@@ -4,7 +4,8 @@
 
 #include "Vehicle.h"
 
-Vehicle::Vehicle(const string name, const string typeName, const double maxWeight, const Path::Type pathType):Entity(name), typeName(typeName), maxWeight(maxWeight), pathType(pathType) {
+Vehicle::Vehicle(const string name, const string typeName, const double maxWeight,  const double costPerKM, const Path::Type pathType):Entity(name), typeName(typeName),
+    maxWeight(maxWeight), costPerKM(costPerKM), pathType(pathType) {
 
 }
 

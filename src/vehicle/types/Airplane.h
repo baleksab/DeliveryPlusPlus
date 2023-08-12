@@ -9,7 +9,7 @@
 
 class Airplane : public Vehicle {
 public:
-    Airplane(const string name, const double maxWeight):Vehicle(name, "Airplane", maxWeight, Path::Type::AIR) {
+    Airplane(const string name, const double maxWeight, const double costPerKM):Vehicle(name, "Airplane", maxWeight, costPerKM, Path::Type::AIR) {
 
     }
 };

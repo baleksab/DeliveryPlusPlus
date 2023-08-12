@@ -9,7 +9,7 @@
 
 class Van : public Vehicle {
 public:
-    Van(const string name, const double maxWeight):Vehicle(name, "Van", maxWeight, Path::Type::ROAD) {
+    Van(const string name, const double maxWeight, const double pricePerKM):Vehicle(name, "Van", maxWeight, pricePerKM, Path::Type::ROAD) {
 
     }
 };

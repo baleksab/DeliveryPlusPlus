@@ -9,7 +9,7 @@
 
 class Ship : public Vehicle {
 public:
-    Ship(const string name, const double maxWeight):Vehicle(name, "Ship", maxWeight, Path::Type::WATER) {
+    Ship(const string name, const double maxWeight, const double costPerKM):Vehicle(name, "Ship", maxWeight, costPerKM, Path::Type::WATER) {
 
     }
 };
