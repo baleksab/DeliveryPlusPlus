@@ -24,14 +24,14 @@ unordered_map<int, City *> City::getCities() {
 
 City *City::getCityById(const int index) {
     if (!doesCityExist(index))
-        throw CityDoesNotExist();
+        throw UnexpectedBehavior("City with given id: " + to_string(index) + " does not exist!");
 
     return cities.at(index);
 }
 
 const int City::createCity(const string name, const int countryId) {
     if (!Country::doesCountryExist(countryId))
-        throw CountryDoesNotExist();
+        throw UnexpectedBehavior("Failed creating city: " + name + ", country with id: " + to_string(countryId) + " does not exist!");
 
     City *city = new City(name, countryId);
 
@@ -55,15 +55,21 @@ const bool City::doesConnectionExist(const int index) const {
 }
 
 
-void City::connectTwoCities(const int city1, const int city2, Path *path) {
-    if (city1 == city2)
-        throw SameCityNotAllowed();
+void City::connectTwoCities(const int city1, const int city2, const string pathName, const double pathDistance, const Path::Type pathType) {
+    Path *path = new Path(pathName, pathDistance, pathType);
 
-    City *sCity = getCityById(city1);
-    City *dCity = getCityById(city2);
+    try {
+        City *sCity = getCityById(city1);
+        City *dCity = getCityById(city2);
 
-    sCity->addConnection(city2, path);
-    dCity->addConnection(city1, path);
+        sCity->addConnection(city2, path);
+
+        if (city1 != city2)
+            dCity->addConnection(city1, path);
+    } catch (UnexpectedBehavior err) {
+        delete path;
+        throw UnexpectedBehavior("Failed connecting cities, city with id: " + to_string(city1) + " and/or city with id: " +  to_string(city2) + " do/does not exist!");
+    }
 }
 
 void City::addConnection(const int destination, Path *path) {
@@ -85,7 +91,7 @@ void City::getConnectionsInfo() const {
         City::getCityById(it.first)->getInfo();
         cout << " by: \n";
 
-        for (auto *path : it.second) {
+        for (auto *path: it.second) {
             path->getInfo();
         }
     }
@@ -95,4 +101,11 @@ void City::getConnectionsInfo() const {
 
 unordered_map<int, vector<Path *>> City::getConnections() const {
     return connections;
+}
+
+void City::clearCities() {
+    for (auto &it : cities)
+        delete it.second;
+
+    cities.clear();
 }

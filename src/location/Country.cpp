@@ -45,7 +45,7 @@ unordered_map<int, Country *> Country::getCountries() {
 
 const Country *Country::getCountryById(const int index) {
     if (!doesCountryExist(index))
-        throw CountryDoesNotExist();
+        throw UnexpectedBehavior("Country with given id: " + to_string(index)  + " does not exist!");
 
     return countries.at(index);
 }
@@ -77,6 +77,11 @@ const bool Country::doesCountryExist(const int index) {
         return false;
 
     return true;
+}
+
+void Country::clearCountries() {
+    for (auto &it : countries)
+        delete it.second;
 }
 
 

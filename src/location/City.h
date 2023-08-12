@@ -8,8 +8,7 @@
 #include "../interface/Entity.h"
 #include "Country.h"
 #include "Path.h"
-#include "../exception/CityDoesNotExist.h"
-#include "../exception/SameCityNotAllowed.h"
+#include "../exception/UnexpectedBehaviour.h"
 #include <unordered_map>
 #include <vector>
 #include <iostream>
@@ -31,7 +30,8 @@ public:
     static City * getCityById(const int);
     static const int createCity(const string, const int);
     static const bool doesCityExist(const int);
-    static void connectTwoCities(const int, const int, Path *);
+    static void connectTwoCities(const int, const int, const string, const double, const Path::Type);
+    static void clearCities();
 private:
     City(const string, const int);
 

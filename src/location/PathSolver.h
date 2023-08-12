@@ -10,7 +10,7 @@
 
 #define ALL_PATH_TYPES -1
 
-#include "../exception/CityNotReachable.h"
+#include "../exception/UnexpectedBehaviour.h"
 #include "City.h"
 #include <iostream>
 #include <unordered_map>

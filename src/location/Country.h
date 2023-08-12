@@ -7,7 +7,7 @@
 
 #include "../interface/Entity.h"
 #include "City.h"
-#include "../exception/CountryDoesNotExist.h"
+#include "../exception/UnexpectedBehaviour.h"
 #include <iostream>
 #include <unordered_map>
 #include <vector>
@@ -35,6 +35,7 @@ public:
     static const int createCountry(const string, const Continent);
     static const string continentToString(const Continent);
     static const bool doesCountryExist(const int index);
+    static void clearCountries();
 private:
     Country(const string, const Continent);
 
