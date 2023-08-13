@@ -8,6 +8,10 @@
 #include "location/PathSolver.h"
 #include "vehicle/Vehicle.h"
 #include "vehicle/types/Truck.h"
+#include "vehicle/types/Van.h"
+#include "vehicle/types/Ship.h"
+#include "vehicle/types/Airplane.h"
+#include "vehicle/types/Train.h"
 #include "package/Package.h"
 #include <iostream>
 
@@ -31,13 +35,14 @@ int main() {
         const int BERLIN = City::createCity("Berlin", GERMANY);
         const int MUNICH = City::createCity("Munich", GERMANY);
         const int FRANKFURT = City::createCity("Frankfurt", GERMANY);
+        const int HAMBURG = City::createCity("Hamburg", GERMANY);
 
         /* Creating USA */
 
         const int USA = Country::createCountry("United States of America", Country::Continent::NORTH_AMERICA);
 
-        const int WASHINGTON = City::createCity("Washington", USA);
-        const int OKLAHOMA = City::createCity("Oklahoma", USA);
+        const int NEW_YORK = City::createCity("New York", USA);
+        const int LAS_VEGAS = City::createCity("Las Vegas", USA);
         const int LOS_ANGELES = City::createCity("Los Angeles", USA);
         const int MIAMI = City::createCity("Miami", USA);
 
@@ -52,10 +57,11 @@ int main() {
         City::connectTwoCities(BERLIN, MUNICH, "Autoput - Berlin Minhen", 150, Path::Type::ROAD);
         City::connectTwoCities(FRANKFURT, BERLIN, "Vazdusna Linija - Frankfurt Berlin", 160, Path::Type::AIR);
         City::connectTwoCities(FRANKFURT, BERLIN, "Put Frankfurt Berlin", 160, Path::Type::ROAD);
-        City::connectTwoCities(WASHINGTON, OKLAHOMA, "Voz Washington Oklahoma", 500, Path::Type::RAIL);
-        City::connectTwoCities(LOS_ANGELES, OKLAHOMA, "Voz Los Angeles Oklahoma", 400, Path::Type::RAIL);
+        City::connectTwoCities(NEW_YORK, LAS_VEGAS, "Voz Washington Oklahoma", 500, Path::Type::RAIL);
+        City::connectTwoCities(LOS_ANGELES, LAS_VEGAS, "Voz Los Angeles Oklahoma", 400, Path::Type::RAIL);
         City::connectTwoCities(MIAMI, LOS_ANGELES, "Voz Majami Los Angeles", 1000, Path::Type::RAIL);
-        City::connectTwoCities(BERLIN, WASHINGTON, "Vazdusna linija Berlin Washington", 2000, Path::Type::AIR);
+        City::connectTwoCities(BERLIN, NEW_YORK, "Vazdusna linija Berlin Washington", 2000, Path::Type::AIR);
+        City::connectTwoCities(HAMBURG, NEW_YORK, "Morska linija Hamburg New York", 2300, Path::Type::WATER);
 
         /* Listing all countries */
 
@@ -78,33 +84,36 @@ int main() {
 
         kragujevacSolver.getBestPathTo(BERLIN);
 
-        /* Showing most optimal path from Kragujevac to Washington by road, if there is one */
+        /* Showing most optimal path from Kragujevac to New York by road, if there is one */
 
-        kragujevacSolver.getPathTo(WASHINGTON, Path::Type::ROAD);
+        kragujevacSolver.getPathTo(NEW_YORK, Path::Type::ROAD);
 
-        /* Creating the packages */
+        cout << "\n\n\n\n\n\n\n\n\n" << endl;
 
-        Package *package1 = new Package("Slusalice", 0.5, KRAGUJEVAC, MUNICH);
-        Package *package2 = new Package("Frizider", 40, BELGRADE, KRAGUJEVAC);
-        Package *package3 = new Package("Sporet", 60, BERLIN, WASHINGTON);
-        Package *package4 = new Package("Racunar i monitor", 10, LOS_ANGELES, FRANKFURT);
-        Package *package5 = new Package("Neki vrlo tezak paket", 1100, MIAMI, KRAGUJEVAC);
-        Package *package6 = new Package("Brasno", 5500, SUBOTICA, OKLAHOMA);
-        Package *package7 = new Package("Tegovi", 400, WASHINGTON, OKLAHOMA);
-        Package *package8 = new Package("Zito", 3000, KRAGUJEVAC, MUNICH);
+        /* Creating the vehicle fleet */
 
+        vector<Vehicle *> vehicles;
+        vehicles.push_back(new Airplane("Airplane 1", 5000, 3500, 10));
+        vehicles.push_back(new Ship("Ship 1", 7500, 2000, 4.5));
+        vehicles.push_back(new Truck("Truck 1", 1000, 300, 0.5));
+        vehicles.push_back(new Van("Van 1", 250, 100, 0.2));
+        vehicles.push_back(new Train("Train 1", 3000, 2500, 6));
 
+        vector<Package *> packages;
+        packages.push_back(new Package("Wheat", 20000, KRAGUJEVAC, LOS_ANGELES));
+        packages.push_back(new Package("Building materials 1", 15000, BERLIN, LAS_VEGAS));
+        packages.push_back(new Package("Machinery", 5500, NEW_YORK, FRANKFURT));
+        packages.push_back(new Package("PC equipment", 500, MUNICH, SUBOTICA));
+        packages.push_back(new Package("Legos", 100, BELGRADE, MIAMI));
+        packages.push_back(new Package("Building materials 2", 7500, HAMBURG, KRAGUJEVAC));
 
+        Vehicle::deliverPackages(packages, vehicles);
 
-        delete package1;
-        delete package2;
-        delete package3;
-        delete package4;
-        delete package5;
-        delete package6;
-        delete package7;
-        delete package8;
+        for (auto *package : packages)
+            delete package;
 
+        for (auto *vehicle : vehicles)
+            delete vehicle;
     } catch (UnexpectedBehavior err) {
         cout << err.what() << endl;
     }

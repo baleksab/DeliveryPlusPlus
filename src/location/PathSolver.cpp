@@ -95,7 +95,7 @@ void PathSolver::getPathTo(const int destinationCity, const Path::Type type) {
 
         reconstructPath(type, destinationCity);
 
-        cout << "Destination reached! Total distance: " << allDistances[type][destinationCity] << " km\n";
+        cout << "Total distance: " << allDistances[type][destinationCity] << " km\n";
     }
 
     cout << "--------------------------------------------" << endl;
@@ -118,7 +118,7 @@ void PathSolver::getBestPathTo(const int destinationCity) {
 
         reconstructPath(ALL_PATH_TYPES, destinationCity);
 
-        cout << "Destination reached! Total distance: " << allDistances[ALL_PATH_TYPES][destinationCity] << " km\n";
+        cout << "Total distance: " << allDistances[ALL_PATH_TYPES][destinationCity] << " km\n";
     }
 
     cout << "--------------------------------------------" << endl;

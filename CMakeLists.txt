@@ -24,4 +24,5 @@ add_executable(Delivery__
         src/vehicle/types/Airplane.h
         src/vehicle/types/Ship.h
         src/exception/UnexpectedBehaviour.h
+        src/vehicle/types/Train.h
 )

@@ -34,6 +34,7 @@ public:
     static void clearCities();
 private:
     City(const string, const int);
+    ~City() = default;
 
     const int country;
     unordered_map<int, vector<Path *>> connections;

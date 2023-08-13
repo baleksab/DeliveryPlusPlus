@@ -38,6 +38,7 @@ public:
     static void clearCountries();
 private:
     Country(const string, const Continent);
+    ~Country() = default;
 
     const Continent continent;
     static unordered_map<int, Country *> countries;

@@ -28,5 +28,6 @@ void Package::getInfo() const {
         City::getCityById(source)->getInfo();
         cout << "\n\t- Destination: ";
         City::getCityById(destination)->getInfo();
+        cout << endl;
 }
 
