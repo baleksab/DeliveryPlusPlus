@@ -4,9 +4,23 @@
 
 #include "Vehicle.h"
 
-Vehicle::Vehicle(const string name, const string typeName, const double maxWeight, const double rentCost, const double pricePerKM, const Path::Type pathType):Entity(name), typeName(typeName),
-    maxWeight(maxWeight), pathType(pathType), rentCost(rentCost), pricePerKM(pricePerKM) {
+Vehicle::Vehicle(const string name, const string typeName, const double maxWeight, const double rentCost, const double pricePerKM, const Path::Type pathType, const int locatedAt):Entity(name), typeName(typeName),
+    maxWeight(maxWeight), pathType(pathType), rentCost(rentCost), pricePerKM(pricePerKM), locatedAt(locatedAt) {
 
+    if (!City::doesCityExist(locatedAt))
+        throw UnexpectedBehavior("Failed creating vehicle " + name + " at city id: " + to_string(locatedAt) + ", city does not exist!");
+
+    bool adequatePathType = false;
+
+    for (auto &map : City::getCityById(locatedAt)->getConnections())
+        for (auto *path : map.second)
+            if (path->getType() == pathType) {
+                adequatePathType = true;
+                break;
+            }
+
+    if (!adequatePathType)
+        throw UnexpectedBehavior("Failed creating vehicle " + name + " at city id: " + to_string(locatedAt) + ", city has no paths with type " + Path::typeToString(pathType));
 }
 
 const string Vehicle::getTypeName() const {
@@ -25,7 +39,9 @@ void Vehicle::getInfo() const {
     cout << "Information about vehicle " << getName() << ": "
         << "\n\t- Type: " << getTypeName()
         << "\n\t- Path Type: " << Path::typeToString(getPathType())
-        << "\n\t- Max weight: " << getMaxWeight() << " kg "
+        << "\n\t- Current location: ";
+    City::getCityById(locatedAt)->getInfo();
+    cout << "\n\t- Max weight: " << getMaxWeight() << " kg "
         << "\n\t- Rent cost: " << getRentCost() << " euros "
         << "\n\t- Price per km: " << getPricePerKM() << " euros "
         << endl;
@@ -52,3 +68,13 @@ void Vehicle::deliverPackages(vector<Package *> packages, vector<Vehicle *> vehi
     }
 }
 
+const int Vehicle::getLocatedAt() const {
+    return locatedAt;
+}
+
+void Vehicle::setLocatedAt(const int city) {
+    if (!City::doesCityExist(city))
+        throw UnexpectedBehavior("Failed moving vehicle " + getName() + " to city id: " + to_string(locatedAt) + ", city does not exist!");
+
+    locatedAt = city;
+}

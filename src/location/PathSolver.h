@@ -14,29 +14,29 @@
 #include "City.h"
 #include <iostream>
 #include <unordered_map>
-#include <vector>
+#include <unordered_set>
 
 using namespace std;
 
 class PathSolver {
 public:
-    PathSolver(const int);
+    PathSolver(const int, const unordered_set<Path::Type>);
 
-    void getPathTo(const int, const Path::Type type);
-    void getBestPathTo(const int);
+    void getPathTo(const int);
 private:
     const int startingCity;
+    const unordered_set<Path::Type> excludedPathTypes;
 
-    unordered_map<int, unordered_map<int, double>> allDistances;
-    unordered_map<int, unordered_map<int, int>> allPreviousCity;
-    unordered_map<int, unordered_map<int, Path *>> allPreviousPath;
+    unordered_map<int, bool> visitedCity;
+    unordered_map<int, double> distances;
+    unordered_map<int, int> previousCity;
+    unordered_map<int, Path *> pathToCity;
 
-    void dijkstra(const int);
-    const int findMinimum(unordered_map<int, double>, unordered_map<int, bool>);
+    const int findMinimum();
     const bool isSmaller(const double, const double);
-    Path * findAdequatePath(City *, const int, const int);
-    void reconstructPath(const int, const int);
-    const bool isCityReachable(const int, const int);
+    Path * findAdequatePath(City *, const int);
+    void reconstructPath(const int);
+    const bool isCityReachable(const int);
 };
 
 

@@ -72,32 +72,39 @@ int main() {
 
         City::getCityById(BERLIN)->getConnectionsInfo();
 
-        /* Solving all shortest paths from Kragujevac to other cities */
+        /* Calculating most optimal path from Kragujevac to other cities by road */
 
-        PathSolver kragujevacSolver(KRAGUJEVAC);
+        unordered_set<Path::Type> excludedTypes = {
+                Path::Type::AIR,
+                Path::Type::WATER,
+                Path::Type::RAIL
+        };
 
-        /* Showing most optimal path from Kragujevac to Berlin by road, if there is one */
+        PathSolver kragujevacRoadOnly(KRAGUJEVAC, excludedTypes);
 
-        kragujevacSolver.getPathTo(BERLIN, Path::Type::ROAD);
+            /* Checking if it's possible to go to Berlin by road only */
 
-        /* Showing most optimal path from Kragujevac to Berlin all possible transportation methods, if there is one */
+            kragujevacRoadOnly.getPathTo(BERLIN);
 
-        kragujevacSolver.getBestPathTo(BERLIN);
+            /* Checking if it's possible to go to New York by road only */
 
-        /* Showing most optimal path from Kragujevac to New York by road, if there is one */
+            kragujevacRoadOnly.getPathTo(NEW_YORK);
 
-        kragujevacSolver.getPathTo(NEW_YORK, Path::Type::ROAD);
-
-        cout << "\n\n\n\n\n\n\n\n\n" << endl;
+        cout << "\n\n\n" << endl;
 
         /* Creating the vehicle fleet */
 
         vector<Vehicle *> vehicles;
-        vehicles.push_back(new Airplane("Airplane 1", 5000, 3500, 10));
-        vehicles.push_back(new Ship("Ship 1", 7500, 2000, 4.5));
-        vehicles.push_back(new Truck("Truck 1", 1000, 300, 0.5));
-        vehicles.push_back(new Van("Van 1", 250, 100, 0.2));
-        vehicles.push_back(new Train("Train 1", 3000, 2500, 6));
+        vehicles.push_back(new Airplane("Airplane 1", 5000, 3500, 10, BERLIN));
+        vehicles.push_back(new Ship("Ship 1", 7500, 2000, 4.5, HAMBURG));
+        vehicles.push_back(new Truck("Truck 1", 3000, 300, 0.5, KRAGUJEVAC));
+        vehicles.push_back(new Van("Van 1", 250, 100, 0.2, FRANKFURT));
+        vehicles.push_back(new Train("Train 1", 3000, 2500, 6, LOS_ANGELES));
+
+        cout << "Available vehicle fleet: " << endl;
+
+        for (auto *vehicle : vehicles)
+            vehicle->getInfo();
 
         vector<Package *> packages;
         packages.push_back(new Package("Wheat", 20000, KRAGUJEVAC, LOS_ANGELES));

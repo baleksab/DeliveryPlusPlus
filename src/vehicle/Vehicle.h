@@ -9,7 +9,7 @@
 #include "../location/Path.h"
 #include "../package/Package.h"
 #include <iostream>
-#include <vector>
+#include <unordered_map>
 
 using namespace std;
 
@@ -19,11 +19,13 @@ public:
     const double getMaxWeight() const;
     const double getRentCost() const;
     const double getPricePerKM() const;
+    const int getLocatedAt() const;
     const Path::Type getPathType() const;
     void getInfo() const;
     static void deliverPackages(vector<Package *>, vector<Vehicle *>);
 protected:
-    Vehicle(const string, const string, const double, const double, const double, const Path::Type);
+    Vehicle(const string, const string, const double, const double, const double, const Path::Type, const int);
+    void setLocatedAt(const int);
 private:
     int locatedAt;
     const string typeName;
@@ -31,6 +33,7 @@ private:
     const double pricePerKM;
     const double maxWeight;
     const Path::Type pathType;
+    static unordered_map<int, Vehicle *> vehicles;
 };
 
 
