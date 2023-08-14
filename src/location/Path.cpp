@@ -60,3 +60,7 @@ void Path::clearPaths() {
     for (auto &it : paths)
         delete it.second;
 }
+
+unordered_map<int, Path *> Path::getPaths() {
+    return paths;
+}

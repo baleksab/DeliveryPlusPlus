@@ -93,7 +93,7 @@ void Vehicle::deliverPackages(vector<Package *> packages, vector<Vehicle *> vehi
             cout << "- Found the most optimal path to destination, checking if there adequate vehicles for the found path types..." << endl;
 
             unordered_map<int, int> previousCity = pathSolver.getPreviousCity();
-            unordered_map<int, int> pathToCity = pathSolver.getPathToCity();
+            unordered_map<int, int> pathToCity = pathSolver.getPathToPreviousCity();
 
             int index = package->getDestination();
             bool restartProcess = false;
@@ -142,9 +142,11 @@ void Vehicle::deliverPackages(vector<Package *> packages, vector<Vehicle *> vehi
 
         if (shouldSkip) {
             cout << "- Skipping this package because it's impossible to deliver it with current vehicle selection!" << endl;
+
             continue;
         } else
-            cout << "- Adequate vehicles found, starting delivery..." << endl;
+            cout << "- Optimal path is okay, starting delivery..." << endl;
+
 
         cout << "- Finished delivering this package!" << endl;
         cout << "--------------------------------------------" << endl;
@@ -153,6 +155,9 @@ void Vehicle::deliverPackages(vector<Package *> packages, vector<Vehicle *> vehi
     cout << "--------------------------------------------" << endl;
     cout << "\t\tFinished deliveries..." << endl;
     cout << "--------------------------------------------\n\n" << endl;
+
+    for (auto &it : Path::getPaths())
+        it.second->setPathDisabled(false);
 }
 
 const int Vehicle::getLocatedAt() const {

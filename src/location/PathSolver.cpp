@@ -9,7 +9,7 @@ PathSolver::PathSolver(const int startingCity, const unordered_set<Path::Type> i
         int u = it.first;
         distances[u] = INFINITE;
         previousCity[u] = UNDEFINED;
-        pathToCity[u] = UNDEFINED;
+        pathToPreviousCity[u] = UNDEFINED;
         visitedCity[u] = false;
     }
 
@@ -33,7 +33,7 @@ PathSolver::PathSolver(const int startingCity, const unordered_set<Path::Type> i
                 if (pathID != UNDEFINED && isSmaller(distances[u] + Path::getPathById(pathID)->getDistance(), distances[v])) {
                     distances[v] = distances[u] + Path::getPathById(pathID)->getDistance();
                     previousCity[v] = u;
-                    pathToCity[v] = pathID;
+                    pathToPreviousCity[v] = pathID;
                 }
             }
         }
@@ -102,7 +102,7 @@ void PathSolver::getPathTo(const int destinationCity) {
 void PathSolver::reconstructPath(const int destinationCity)  {
     if (previousCity[destinationCity] != UNDEFINED) {
         reconstructPath(previousCity[destinationCity]);
-        Path::getPathById(pathToCity[destinationCity])->getInfo();
+        Path::getPathById(pathToPreviousCity[destinationCity])->getInfo();
     }
 
     cout << "\tCity: ";
@@ -150,7 +150,7 @@ unordered_map<int, int> PathSolver::getPreviousCity() {
     return previousCity;
 }
 
-unordered_map<int, int> PathSolver::getPathToCity() {
-    return pathToCity;
+unordered_map<int, int> PathSolver::getPathToPreviousCity() {
+    return pathToPreviousCity;
 }
 

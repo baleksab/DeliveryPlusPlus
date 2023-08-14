@@ -25,7 +25,7 @@ public:
     void getPathTo(const int);
     const bool isCityReachable(const int);
     unordered_map<int, int> getPreviousCity();
-    unordered_map<int, int> getPathToCity();
+    unordered_map<int, int> getPathToPreviousCity();
 private:
     const int startingCity;
     const unordered_set<Path::Type> includedPathTypes;
@@ -33,7 +33,7 @@ private:
     unordered_map<int, bool> visitedCity;
     unordered_map<int, double> distances;
     unordered_map<int, int> previousCity;
-    unordered_map<int, int> pathToCity;
+    unordered_map<int, int> pathToPreviousCity;
 
     const int findMinimum();
     const bool isSmaller(const double, const double);

@@ -28,6 +28,7 @@ public:
     static const string typeToString(const Type);
     static int createPath(const string, const double, const Type);
     static Path * getPathById(const int);
+    static unordered_map<int, Path *> getPaths();
     static void clearPaths();
 private:
     Path(const string, const double, const Type);
