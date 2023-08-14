@@ -8,6 +8,7 @@
 #include "../interface/Entity.h"
 #include "../location/Path.h"
 #include "../package/Package.h"
+#include "../location/PathSolver.h"
 #include <iostream>
 #include <unordered_map>
 
@@ -33,7 +34,6 @@ private:
     const double pricePerKM;
     const double maxWeight;
     const Path::Type pathType;
-    static unordered_map<int, Vehicle *> vehicles;
 };
 
 

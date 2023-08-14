@@ -4,7 +4,7 @@
 
 #include "PathSolver.h"
 
-PathSolver::PathSolver(const int startingCity, const unordered_set<Path::Type> excludedPathTypes):startingCity(startingCity), excludedPathTypes(excludedPathTypes) {
+PathSolver::PathSolver(const int startingCity, const unordered_set<Path::Type> includedPathTypes):startingCity(startingCity), includedPathTypes(includedPathTypes) {
     for (auto &it : City::getCities()) {
         int u = it.first;
         distances[u] = INFINITE;
@@ -70,12 +70,12 @@ void PathSolver::getPathTo(const int destinationCity) {
     cout << " to ";
     City::getCityById(destinationCity)->getInfo();
     cout << endl;
-    cout << "\t- Excluded path types: ";
+    cout << "\t- Allowed path types: ";
 
-    if (excludedPathTypes.empty())
-        cout << " NONE";
+    if (includedPathTypes.empty())
+        cout << " ALL";
     else
-        for (const Path::Type &type : excludedPathTypes)
+        for (const Path::Type &type : includedPathTypes)
             cout << Path::typeToString(type) << " ";
 
     cout << endl;
@@ -84,10 +84,10 @@ void PathSolver::getPathTo(const int destinationCity) {
     if (!isCityReachable(destinationCity)) {
         cout << "Path not found!" << endl;
 
-        if (excludedPathTypes.empty())
-            cout << "Concluding that it's impossible to reach this city, considering no exclusions!" << endl;
+        if (includedPathTypes.empty())
+            cout << "Concluding that it's impossible to reach this city, considering all path types included!" << endl;
         else
-            cout << "Consider removing some exclusions and trying again!" << endl;
+            cout << "Consider adding more path types and trying again!" << endl;
     } else {
         cout << "Most optimal path found!" << endl;
 
@@ -116,13 +116,16 @@ Path * PathSolver::findAdequatePath(City *curCity, const int destination) {
     vector<Path *> paths = curCity->getConnections()[destination];
 
     for (auto *path : paths) {
-        bool notFiltered = true;
+        bool notFiltered = false;
 
-        for (const Path::Type &type : excludedPathTypes)
-            if (type == path->getType()) {
-                notFiltered = false;
-                break;
-            }
+        if (includedPathTypes.empty())
+            notFiltered = true;
+        else
+            for (const Path::Type &type : includedPathTypes)
+                if (type == path->getType()) {
+                    notFiltered = true;
+                    break;
+                }
 
         if (!notFiltered)
             continue;
@@ -136,6 +139,6 @@ Path * PathSolver::findAdequatePath(City *curCity, const int destination) {
 }
 
 const bool PathSolver::isCityReachable(const int destination) {
-    return previousCity[destination] != UNDEFINED;
+    return startingCity == destination || distances[destination] != INFINITE;
 }
 

@@ -23,9 +23,10 @@ public:
     PathSolver(const int, const unordered_set<Path::Type>);
 
     void getPathTo(const int);
+    const bool isCityReachable(const int);
 private:
     const int startingCity;
-    const unordered_set<Path::Type> excludedPathTypes;
+    const unordered_set<Path::Type> includedPathTypes;
 
     unordered_map<int, bool> visitedCity;
     unordered_map<int, double> distances;
@@ -36,7 +37,6 @@ private:
     const bool isSmaller(const double, const double);
     Path * findAdequatePath(City *, const int);
     void reconstructPath(const int);
-    const bool isCityReachable(const int);
 };
 
 

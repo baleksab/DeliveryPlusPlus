@@ -74,13 +74,11 @@ int main() {
 
         /* Calculating most optimal path from Kragujevac to other cities by road */
 
-        unordered_set<Path::Type> excludedTypes = {
-                Path::Type::AIR,
-                Path::Type::WATER,
-                Path::Type::RAIL
+        unordered_set<Path::Type> includedTypes = {
+                Path::Type::ROAD
         };
 
-        PathSolver kragujevacRoadOnly(KRAGUJEVAC, excludedTypes);
+        PathSolver kragujevacRoadOnly(KRAGUJEVAC, includedTypes);
 
             /* Checking if it's possible to go to Berlin by road only */
 
@@ -89,6 +87,16 @@ int main() {
             /* Checking if it's possible to go to New York by road only */
 
             kragujevacRoadOnly.getPathTo(NEW_YORK);
+
+        /* Calculating most optimal path from Kragujevac to other cities by all path types */
+
+        includedTypes.clear(); // if filter is empty it means all path types allowed
+
+        PathSolver kragujevacAll(KRAGUJEVAC, includedTypes);
+
+            /* Checking if it's possible to go to New York by all types */
+
+            kragujevacAll.getPathTo(NEW_YORK);
 
         cout << "\n\n\n" << endl;
 
@@ -101,13 +109,8 @@ int main() {
         vehicles.push_back(new Van("Van 1", 250, 100, 0.2, FRANKFURT));
         vehicles.push_back(new Train("Train 1", 3000, 2500, 6, LOS_ANGELES));
 
-        cout << "Available vehicle fleet: " << endl;
-
-        for (auto *vehicle : vehicles)
-            vehicle->getInfo();
-
         vector<Package *> packages;
-        packages.push_back(new Package("Wheat", 20000, KRAGUJEVAC, LOS_ANGELES));
+        packages.push_back(new Package("Wheat", 20000, BELGRADE, LOS_ANGELES));
         packages.push_back(new Package("Building materials 1", 15000, BERLIN, LAS_VEGAS));
         packages.push_back(new Package("Machinery", 5500, NEW_YORK, FRANKFURT));
         packages.push_back(new Package("PC equipment", 500, MUNICH, SUBOTICA));

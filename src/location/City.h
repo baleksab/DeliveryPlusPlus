@@ -25,6 +25,7 @@ public:
     void getInfo() const;
     void getConnectionsInfo() const;
     unordered_map<int, vector<Path *>> getConnections() const;
+
     const bool doesConnectionExist(const int) const;
     static unordered_map<int, City *> getCities();
     static City * getCityById(const int);

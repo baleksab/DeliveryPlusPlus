@@ -36,7 +36,8 @@ const Path::Type Vehicle::getPathType() const {
 }
 
 void Vehicle::getInfo() const {
-    cout << "Information about vehicle " << getName() << ": "
+    cout << "Vehicle: "
+        << "\n\t- Name: " << getName()
         << "\n\t- Type: " << getTypeName()
         << "\n\t- Path Type: " << Path::typeToString(getPathType())
         << "\n\t- Current location: ";
@@ -56,13 +57,31 @@ const double Vehicle::getPricePerKM() const {
 }
 
 void Vehicle::deliverPackages(vector<Package *> packages, vector<Vehicle *> vehicles) {
-    cout << "--------------------------------------------" << endl;
-    cout << "Starting deliveries..." << endl;
+    cout << "\n\n--------------------------------------------" << endl;
+    cout << "\t\tStarting deliveries..." << endl;
     cout << "--------------------------------------------" << endl;
 
+    cout << "- Searching for packages" << endl;
 
     for (auto *package : packages) {
+        cout << "- Found package: " << endl;
+        cout << "\t";
+        package->getInfo();
+        cout << "- Searching for available vehicles: " << endl;
 
+        vector<Vehicle *> suitableVehicles;
+
+        for (auto *vehicle : vehicles) {
+            PathSolver pathFinder(vehicle->getLocatedAt(), unordered_set<Path::Type> { vehicle->getPathType() });
+
+            if (!pathFinder.isCityReachable(package->getSource()))
+                continue;
+
+            cout << "- Found candidate: " << endl;
+            cout << "\t";
+            vehicle->getInfo();
+            suitableVehicles.push_back(vehicle);
+        }
 
         break;
     }
