@@ -4,6 +4,7 @@
 
 #include "Path.h"
 
+unordered_map<int, Path *> Path::paths;
 const string Path::typeName[4] {
     "Road",
     "Rail",
@@ -33,4 +34,29 @@ void Path::getInfo() const {
             << "\n\t\t\t- Type: " << typeToString(getType())
             << "\n\t\t\t- Distance: " << getDistance() << " km"
             << endl;
+}
+
+void Path::setPathDisabled(const bool disabled) {
+    pathDisabled = disabled;
+}
+
+const bool Path::getPathDisabled() {
+    return pathDisabled;
+}
+
+Path * Path::getPathById(const int index) {
+    return paths.at(index);
+}
+
+int Path::createPath(const string name, const double distance, const Path::Type type) {
+    Path *path = new Path(name, distance, type);
+
+    paths.insert({path->getId(), path});
+
+    return path->getId();
+}
+
+void Path::clearPaths() {
+    for (auto &it : paths)
+        delete it.second;
 }

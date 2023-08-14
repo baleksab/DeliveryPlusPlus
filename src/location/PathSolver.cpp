@@ -9,7 +9,7 @@ PathSolver::PathSolver(const int startingCity, const unordered_set<Path::Type> i
         int u = it.first;
         distances[u] = INFINITE;
         previousCity[u] = UNDEFINED;
-        pathToCity[u] = nullptr;
+        pathToCity[u] = UNDEFINED;
         visitedCity[u] = false;
     }
 
@@ -28,12 +28,12 @@ PathSolver::PathSolver(const int startingCity, const unordered_set<Path::Type> i
             int v = itt.first;
 
             if (!visitedCity[v] && curCity->doesConnectionExist(v)) {
-                Path *shortestPath = findAdequatePath(curCity, v);
+                const int pathID = findAdequatePath(curCity, v);
 
-                if (shortestPath != nullptr && isSmaller(distances[u] + shortestPath->getDistance(), distances[v])) {
-                    distances[v] = distances[u] + shortestPath->getDistance();
+                if (pathID != UNDEFINED && isSmaller(distances[u] + Path::getPathById(pathID)->getDistance(), distances[v])) {
+                    distances[v] = distances[u] + Path::getPathById(pathID)->getDistance();
                     previousCity[v] = u;
-                    pathToCity[v] = shortestPath;
+                    pathToCity[v] = pathID;
                 }
             }
         }
@@ -102,7 +102,7 @@ void PathSolver::getPathTo(const int destinationCity) {
 void PathSolver::reconstructPath(const int destinationCity)  {
     if (previousCity[destinationCity] != UNDEFINED) {
         reconstructPath(previousCity[destinationCity]);
-        pathToCity[destinationCity]->getInfo();
+        Path::getPathById(pathToCity[destinationCity])->getInfo();
     }
 
     cout << "\tCity: ";
@@ -110,12 +110,17 @@ void PathSolver::reconstructPath(const int destinationCity)  {
     cout << endl;
 }
 
-Path * PathSolver::findAdequatePath(City *curCity, const int destination) {
-    Path *adequatePath = nullptr;
+const int PathSolver::findAdequatePath(City *curCity, const int destination) {
+    int adequatePath = UNDEFINED;
 
-    vector<Path *> paths = curCity->getConnections()[destination];
+    vector<int> paths = curCity->getConnections()[destination];
 
-    for (auto *path : paths) {
+    for (auto &id : paths) {
+        Path *path = Path::getPathById(id);
+
+        if (path->getPathDisabled())
+            continue;
+
         bool notFiltered = false;
 
         if (includedPathTypes.empty())
@@ -130,15 +135,22 @@ Path * PathSolver::findAdequatePath(City *curCity, const int destination) {
         if (!notFiltered)
             continue;
 
-        if (adequatePath == nullptr || path->getDistance() < adequatePath->getDistance())
-            adequatePath = path;
+        if (adequatePath == UNDEFINED || path->getDistance() < Path::getPathById(adequatePath)->getDistance())
+            adequatePath = path->getId();
     }
-
 
     return adequatePath;
 }
 
 const bool PathSolver::isCityReachable(const int destination) {
     return startingCity == destination || distances[destination] != INFINITE;
+}
+
+unordered_map<int, int> PathSolver::getPreviousCity() {
+    return previousCity;
+}
+
+unordered_map<int, int> PathSolver::getPathToCity() {
+    return pathToCity;
 }
 

@@ -56,27 +56,26 @@ const bool City::doesConnectionExist(const int index) const {
 
 
 void City::connectTwoCities(const int city1, const int city2, const string pathName, const double pathDistance, const Path::Type pathType) {
-    Path *path = new Path(pathName, pathDistance, pathType);
+    int pathID = Path::createPath(pathName, pathDistance, pathType);
 
     try {
         City *sCity = getCityById(city1);
         City *dCity = getCityById(city2);
 
-        sCity->addConnection(city2, path);
+        sCity->addConnection(city2, pathID);
 
         if (city1 != city2)
-            dCity->addConnection(city1, path);
+            dCity->addConnection(city1, pathID);
     } catch (UnexpectedBehavior err) {
-        delete path;
         throw UnexpectedBehavior("Failed connecting cities, city with id: " + to_string(city1) + " and/or city with id: " +  to_string(city2) + " do/does not exist!");
     }
 }
 
-void City::addConnection(const int destination, Path *path) {
+void City::addConnection(const int destination, const int pathID) {
     if (!doesConnectionExist(destination))
-        connections[destination] = vector<Path *>();
+        connections[destination] = vector<int>();
 
-    connections[destination].push_back(path);
+    connections[destination].push_back(pathID);
 }
 
 void City::getConnectionsInfo() const {
@@ -91,15 +90,15 @@ void City::getConnectionsInfo() const {
         City::getCityById(it.first)->getInfo();
         cout << " by: \n";
 
-        for (auto *path: it.second) {
-            path->getInfo();
+        for (auto &id: it.second) {
+            Path::getPathById(id)->getInfo();
         }
     }
 
     cout << "--------------------------------------------" << endl;
 }
 
-unordered_map<int, vector<Path *>> City::getConnections() const {
+unordered_map<int, vector<int>> City::getConnections() const {
     return connections;
 }
 

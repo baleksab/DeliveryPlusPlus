@@ -61,6 +61,7 @@ int main() {
         City::connectTwoCities(LOS_ANGELES, LAS_VEGAS, "Voz Los Angeles Oklahoma", 400, Path::Type::RAIL);
         City::connectTwoCities(MIAMI, LOS_ANGELES, "Voz Majami Los Angeles", 1000, Path::Type::RAIL);
         City::connectTwoCities(BERLIN, NEW_YORK, "Vazdusna linija Berlin Washington", 2000, Path::Type::AIR);
+        City::connectTwoCities(BERLIN, HAMBURG, "Autoput Berlin - Hamburg", 150, Path::Type::ROAD);
         City::connectTwoCities(HAMBURG, NEW_YORK, "Morska linija Hamburg New York", 2300, Path::Type::WATER);
 
         /* Listing all countries */
@@ -130,6 +131,9 @@ int main() {
 
     City::clearCities();
     Country::clearCountries();
+    Path::clearPaths();
+
+    cout << "Sucessfully terminated the program!" << endl;
 
     return 0;
 }

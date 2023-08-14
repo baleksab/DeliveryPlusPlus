@@ -24,7 +24,7 @@ public:
     const int getCountry() const;
     void getInfo() const;
     void getConnectionsInfo() const;
-    unordered_map<int, vector<Path *>> getConnections() const;
+    unordered_map<int, vector<int>> getConnections() const;
 
     const bool doesConnectionExist(const int) const;
     static unordered_map<int, City *> getCities();
@@ -38,10 +38,10 @@ private:
     ~City() = default;
 
     const int country;
-    unordered_map<int, vector<Path *>> connections;
+    unordered_map<int, vector<int>> connections;
     static unordered_map<int, City *> cities;
 
-    void addConnection(const int, Path *);
+    void addConnection(const int, const int);
 };
 
 

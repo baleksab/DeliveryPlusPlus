@@ -13,8 +13,8 @@ Vehicle::Vehicle(const string name, const string typeName, const double maxWeigh
     bool adequatePathType = false;
 
     for (auto &map : City::getCityById(locatedAt)->getConnections())
-        for (auto *path : map.second)
-            if (path->getType() == pathType) {
+        for (auto &id : map.second)
+            if (Path::getPathById(id)->getType() == pathType) {
                 adequatePathType = true;
                 break;
             }
@@ -61,30 +61,98 @@ void Vehicle::deliverPackages(vector<Package *> packages, vector<Vehicle *> vehi
     cout << "\t\tStarting deliveries..." << endl;
     cout << "--------------------------------------------" << endl;
 
+    if (packages.empty())
+        throw UnexpectedBehavior("There are no packages to deliver!");
+
+    if (vehicles.empty())
+        throw UnexpectedBehavior("There are no vehicles to do deliveries!");
+
     cout << "- Searching for packages" << endl;
 
     for (auto *package : packages) {
         cout << "- Found package: " << endl;
         cout << "\t";
         package->getInfo();
-        cout << "- Searching for available vehicles: " << endl;
 
-        vector<Vehicle *> suitableVehicles;
+        bool shouldSkip = false;
 
-        for (auto *vehicle : vehicles) {
-            PathSolver pathFinder(vehicle->getLocatedAt(), unordered_set<Path::Type> { vehicle->getPathType() });
+        while (true) {
+            PathSolver pathSolver(package->getSource(), unordered_set<Path::Type> {});
 
-            if (!pathFinder.isCityReachable(package->getSource()))
+            if (!pathSolver.isCityReachable(package->getDestination())) {
+                cout << "- Impossible to deliver this package, "
+                    << City::getCityById(package->getDestination())->getName()
+                    << " is not reachable from "
+                    << City::getCityById(package->getSource())->getName();
+
+                shouldSkip = true;
+
+                break;
+            }
+
+            cout << "- Found the most optimal path to destination, checking if there adequate vehicles for the found path types..." << endl;
+
+            unordered_map<int, int> previousCity = pathSolver.getPreviousCity();
+            unordered_map<int, int> pathToCity = pathSolver.getPathToCity();
+
+            int index = package->getDestination();
+            bool restartProcess = false;
+
+            while (previousCity[index] != UNDEFINED) {
+                Path *path = Path::getPathById(pathToCity[index]);
+
+                cout << "\t- Checking for path '" << path->getName() << "' of type " << Path::typeToString(path->getType())
+                    << " between " << City::getCityById(index)->getName() << " and " << City::getCityById(previousCity[index])->getName() << endl;
+
+                bool pathIsGood = false;
+
+                for (auto *vehicle : vehicles) {
+                    if (vehicle->getPathType() == Path::getPathById(pathToCity[index])->getType()) {
+                        PathSolver vehicleSolver(vehicle->getLocatedAt(), unordered_set<Path::Type> { vehicle->getPathType() });
+
+                        if (vehicleSolver.isCityReachable(index)) {
+                            cout << "\t\t- Found vehicle '" << vehicle->getName() << "' with path type "
+                                << Path::typeToString(vehicle->getPathType()) << " that is connected to this path!" << endl;
+                            pathIsGood = true;
+
+                            break;
+                        }
+                    }
+                }
+
+                if (!pathIsGood) {
+                    cout << "\t\t- No vehicle found with the path type that is connected to this path!" << endl;
+                    cout << "\t\t\t- Disabling the path and starting to calculate most optimal path again!" << endl;
+
+                    Path::getPathById(pathToCity[index])->setPathDisabled(true);
+
+                    restartProcess = true;
+
+                    break;
+                }
+
+                index = previousCity[index];
+            }
+
+            if (restartProcess)
                 continue;
 
-            cout << "- Found candidate: " << endl;
-            cout << "\t";
-            vehicle->getInfo();
-            suitableVehicles.push_back(vehicle);
+            break;
         }
 
-        break;
+        if (shouldSkip) {
+            cout << "- Skipping this package because it's impossible to deliver it with current vehicle selection!" << endl;
+            continue;
+        } else
+            cout << "- Adequate vehicles found, starting delivery..." << endl;
+
+        cout << "- Finished delivering this package!" << endl;
+        cout << "--------------------------------------------" << endl;
     }
+
+    cout << "--------------------------------------------" << endl;
+    cout << "\t\tFinished deliveries..." << endl;
+    cout << "--------------------------------------------\n\n" << endl;
 }
 
 const int Vehicle::getLocatedAt() const {
