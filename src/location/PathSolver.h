@@ -26,6 +26,7 @@ public:
     const bool isCityReachable(const int);
     unordered_map<int, int> getPreviousCity();
     unordered_map<int, int> getPathToPreviousCity();
+    unordered_map<int, double> getDistances();
 private:
     const int startingCity;
     const unordered_set<Path::Type> includedPathTypes;

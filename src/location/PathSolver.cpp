@@ -65,35 +65,35 @@ const int PathSolver::findMinimum() {
 
 void PathSolver::getPathTo(const int destinationCity) {
     cout << "\n--------------------------------------------" << endl;
-    cout << "Finding most optimal path from ";
+    cout << "Nalaženje najoptimalnijeg puta od ";
     City::getCityById(startingCity)->getInfo();
-    cout << " to ";
+    cout << " do ";
     City::getCityById(destinationCity)->getInfo();
     cout << endl;
-    cout << "\t- Allowed path types: ";
+    cout << "\t- Dozvoljeni tipovi puteva: ";
 
     if (includedPathTypes.empty())
-        cout << " ALL";
+        cout << " SVI";
     else
         for (const Path::Type &type : includedPathTypes)
             cout << Path::typeToString(type) << " ";
 
     cout << endl;
-    cout << "Calculating..." << endl;
+    cout << "Računam..." << endl;
 
     if (!isCityReachable(destinationCity)) {
-        cout << "Path not found!" << endl;
+        cout << "Put nije nadjen!" << endl;
 
         if (includedPathTypes.empty())
-            cout << "Concluding that it's impossible to reach this city, considering all path types included!" << endl;
+            cout << "Zakljucujem da je nemoguce da se stigne do ovog grada, bilo kojim tipom veze!" << endl;
         else
-            cout << "Consider adding more path types and trying again!" << endl;
+            cout << "Probajte da dozvolite vise tipova veze!" << endl;
     } else {
-        cout << "Most optimal path found!" << endl;
+        cout << "Najoptimalniji put pronadjen!" << endl;
 
         reconstructPath(destinationCity);
 
-        cout << "Total distance: " << distances[destinationCity] << " km\n";
+        cout << "Ukupno rastojanje: " << distances[destinationCity] << " km\n";
     }
 
     cout << "--------------------------------------------" << endl;
@@ -105,7 +105,7 @@ void PathSolver::reconstructPath(const int destinationCity)  {
         Path::getPathById(pathToPreviousCity[destinationCity])->getInfo();
     }
 
-    cout << "\tCity: ";
+    cout << "\tGrad: ";
     City::getCityById(destinationCity)->getInfo();
     cout << endl;
 }
@@ -152,5 +152,9 @@ unordered_map<int, int> PathSolver::getPreviousCity() {
 
 unordered_map<int, int> PathSolver::getPathToPreviousCity() {
     return pathToPreviousCity;
+}
+
+unordered_map<int, double> PathSolver::getDistances() {
+    return distances;
 }
 

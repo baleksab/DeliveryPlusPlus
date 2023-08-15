@@ -24,14 +24,14 @@ unordered_map<int, City *> City::getCities() {
 
 City *City::getCityById(const int index) {
     if (!doesCityExist(index))
-        throw UnexpectedBehavior("City with given id: " + to_string(index) + " does not exist!");
+        throw UnexpectedBehavior("Grad sa datim id-om: " + to_string(index) + " ne postoji!");
 
     return cities.at(index);
 }
 
 const int City::createCity(const string name, const int countryId) {
     if (!Country::doesCountryExist(countryId))
-        throw UnexpectedBehavior("Failed creating city: " + name + ", country with id: " + to_string(countryId) + " does not exist!");
+        throw UnexpectedBehavior("Greska pri kreiranju grada: " + name + ", drzava sa id-om: " + to_string(countryId) + " ne postoji!");
 
     City *city = new City(name, countryId);
 
@@ -67,7 +67,7 @@ void City::connectTwoCities(const int city1, const int city2, const string pathN
         if (city1 != city2)
             dCity->addConnection(city1, pathID);
     } catch (UnexpectedBehavior err) {
-        throw UnexpectedBehavior("Failed connecting cities, city with id: " + to_string(city1) + " and/or city with id: " +  to_string(city2) + " do/does not exist!");
+        throw UnexpectedBehavior("Greska pri pravljenju veze izmedju gradova, grad sa id-om: " + to_string(city1) + " i/ili grad sa id-om: " +  to_string(city2) + " ne postoje/postoji!");
     }
 }
 
@@ -83,12 +83,12 @@ void City::getConnectionsInfo() const {
 
     getInfo();
 
-    cout << " is directly connected to: " << endl;
+    cout << " je direktno povezan sa: " << endl;
 
     for (auto &it : getConnections()) {
         cout << "\t* ";
         City::getCityById(it.first)->getInfo();
-        cout << " by: \n";
+        cout << " preko: \n";
 
         for (auto &id: it.second) {
             Path::getPathById(id)->getInfo();

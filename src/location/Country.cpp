@@ -6,12 +6,12 @@
 
 unordered_map<int, Country *> Country::countries;
 const string Country::continentNames[] = {
-        "Europe",
-        "Asia",
-        "North America",
-        "South America",
-        "Australia",
-        "Antarctica"
+        "Evropa",
+        "Azija",
+        "Severna Amerika",
+        "Juzna Amerika",
+        "Australija",
+        "Antarktika"
 };
 
 Country::Country(const string name, const Continent continent): Entity(name), continent(continent) {
@@ -25,10 +25,10 @@ const Country::Continent Country::getContinent() const {
 void Country::getInfo() const {
     cout << "--------------------------------------------" << endl;
 
-    cout << "Information about " << getName() << ": "
-         << "\n\tCountry ID: " << getId()
-         << "\n\tContinent: " << continentToString(getContinent())
-         << "\n\tCities:\n";
+    cout << "Informacije o drzavi " << getName() << ": "
+         << "\n\tID: " << getId()
+         << "\n\tKontinent: " << continentToString(getContinent())
+         << "\n\tGradovi:\n";
 
         for (auto *city : getCities()) {
             cout << "\t\t";
@@ -45,7 +45,7 @@ unordered_map<int, Country *> Country::getCountries() {
 
 const Country *Country::getCountryById(const int index) {
     if (!doesCountryExist(index))
-        throw UnexpectedBehavior("Country with given id: " + to_string(index)  + " does not exist!");
+        throw UnexpectedBehavior("Drzava sa datim id-om: " + to_string(index)  + " ne postoji!");
 
     return countries.at(index);
 }

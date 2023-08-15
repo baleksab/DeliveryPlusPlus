@@ -104,11 +104,11 @@ int main() {
         /* Creating the vehicle fleet */
 
         vector<Vehicle *> vehicles;
-        vehicles.push_back(new Airplane("Airplane 1", 5000, 3500, 10, BERLIN));
-        vehicles.push_back(new Ship("Ship 1", 7500, 2000, 4.5, HAMBURG));
-        vehicles.push_back(new Truck("Truck 1", 3000, 300, 0.5, KRAGUJEVAC));
-        vehicles.push_back(new Van("Van 1", 250, 100, 0.2, FRANKFURT));
-        vehicles.push_back(new Train("Train 1", 3000, 2500, 6, LOS_ANGELES));
+        vehicles.push_back(new Airplane("Avion 1", 50000, 3500, 10, BERLIN));
+        vehicles.push_back(new Ship("Brod 1", 75000, 2000, 4.5, HAMBURG));
+        vehicles.push_back(new Truck("Kamion 1", 10000, 300, 0.5, KRAGUJEVAC));
+        vehicles.push_back(new Van("Kombi 1", 1000, 100, 0.2, FRANKFURT));
+        vehicles.push_back(new Train("Voz 1", 50000, 2500, 6, LOS_ANGELES));
 
         vector<Package *> packages;
         packages.push_back(new Package("Wheat", 20000, BELGRADE, LOS_ANGELES));
@@ -133,7 +133,7 @@ int main() {
     Country::clearCountries();
     Path::clearPaths();
 
-    cout << "Sucessfully terminated the program!" << endl;
+    cout << "Program se uspesno izvrsio i ocistila se sva memorija!" << endl;
 
     return 0;
 }

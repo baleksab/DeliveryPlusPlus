@@ -6,10 +6,10 @@
 
 unordered_map<int, Path *> Path::paths;
 const string Path::typeName[4] {
-    "Road",
-    "Rail",
-    "Air",
-    "Water"
+    "Put",
+    "Šina",
+    "Vazduh",
+    "Voda"
 };
 
 Path::Path(const string name, const double distance, const Path::Type type):Entity(name), distance(distance), type(type) {
@@ -29,10 +29,10 @@ const string Path::typeToString(const Path::Type type) {
 }
 
 void Path::getInfo() const {
-    cout << "\t\tPath: "
-            << "\n\t\t\t- Name: " << getName()
-            << "\n\t\t\t- Type: " << typeToString(getType())
-            << "\n\t\t\t- Distance: " << getDistance() << " km"
+    cout << "\t\tPut: "
+            << "\n\t\t\t- Nayiv: " << getName()
+            << "\n\t\t\t- Tip: " << typeToString(getType())
+            << "\n\t\t\t- Rastojanje: " << getDistance() << " km"
             << endl;
 }
 

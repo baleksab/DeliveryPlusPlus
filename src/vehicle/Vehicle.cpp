@@ -8,7 +8,7 @@ Vehicle::Vehicle(const string name, const string typeName, const double maxWeigh
     maxWeight(maxWeight), pathType(pathType), rentCost(rentCost), pricePerKM(pricePerKM), locatedAt(locatedAt) {
 
     if (!City::doesCityExist(locatedAt))
-        throw UnexpectedBehavior("Failed creating vehicle " + name + " at city id: " + to_string(locatedAt) + ", city does not exist!");
+        throw UnexpectedBehavior("Greska pri kreiranju vozila " + name + " u gradu sa id-om: " + to_string(locatedAt) + ", grad ne postoji!");
 
     bool adequatePathType = false;
 
@@ -20,7 +20,7 @@ Vehicle::Vehicle(const string name, const string typeName, const double maxWeigh
             }
 
     if (!adequatePathType)
-        throw UnexpectedBehavior("Failed creating vehicle " + name + " at city id: " + to_string(locatedAt) + ", city has no paths with type " + Path::typeToString(pathType));
+        throw UnexpectedBehavior("Greska pri kreiranju vozila " + name + " u gradu sa id-om: " + to_string(locatedAt) + ", grad nema ni jedan put sa tipom " + Path::typeToString(pathType));
 }
 
 const string Vehicle::getTypeName() const {
@@ -36,16 +36,14 @@ const Path::Type Vehicle::getPathType() const {
 }
 
 void Vehicle::getInfo() const {
-    cout << "Vehicle: "
-        << "\n\t- Name: " << getName()
-        << "\n\t- Type: " << getTypeName()
-        << "\n\t- Path Type: " << Path::typeToString(getPathType())
-        << "\n\t- Current location: ";
+    cout << "Vozilo: "
+        << "\n\t- Ime: " << getName()
+        << "\n\t- Tip: " << getTypeName()
+        << "\n\t- Tip puta: " << Path::typeToString(getPathType())
+        << "\n\t- Trenutna lokacija: ";
     City::getCityById(locatedAt)->getInfo();
-    cout << "\n\t- Max weight: " << getMaxWeight() << " kg "
-        << "\n\t- Rent cost: " << getRentCost() << " euros "
-        << "\n\t- Price per km: " << getPricePerKM() << " euros "
-        << endl;
+    cout << "\n\t- Maksimalni kapacitet: " << getMaxWeight() << " kg "
+        << "\n\t- Cena po kilometru: " << getPricePerKM() << " evra " << endl;
 }
 
 const double Vehicle::getRentCost() const {
@@ -58,20 +56,20 @@ const double Vehicle::getPricePerKM() const {
 
 void Vehicle::deliverPackages(vector<Package *> packages, vector<Vehicle *> vehicles) {
     cout << "\n\n--------------------------------------------" << endl;
-    cout << "\t\tStarting deliveries..." << endl;
+    cout << "\t\tPocinjem isporuke..." << endl;
     cout << "--------------------------------------------" << endl;
 
     if (packages.empty())
-        throw UnexpectedBehavior("There are no packages to deliver!");
+        throw UnexpectedBehavior("Nema paketa za isporuku!");
 
     if (vehicles.empty())
-        throw UnexpectedBehavior("There are no vehicles to do deliveries!");
+        throw UnexpectedBehavior("Nema vozila dostupnih za isporuku!");
 
-    cout << "- Searching for packages" << endl;
+    cout << "- Trazim pakete..." << endl;
 
     for (auto *package : packages) {
         cout << "--------------------------------------------" << endl;
-        cout << "- Found package: " << endl;
+        cout << "- Nasao sam paket: " << endl;
         cout << "\t";
         package->getInfo();
 
@@ -81,9 +79,9 @@ void Vehicle::deliverPackages(vector<Package *> packages, vector<Vehicle *> vehi
             PathSolver pathSolver(package->getSource(), unordered_set<Path::Type> {});
 
             if (!pathSolver.isCityReachable(package->getDestination())) {
-                cout << "- Impossible to deliver this package, "
+                cout << "- Nemoguce je isporuciti ovaj paket, "
                     << City::getCityById(package->getDestination())->getName()
-                    << " is not reachable from "
+                    << " nije dostizan iz grada "
                     << City::getCityById(package->getSource())->getName();
 
                 shouldSkip = true;
@@ -91,7 +89,7 @@ void Vehicle::deliverPackages(vector<Package *> packages, vector<Vehicle *> vehi
                 break;
             }
 
-            cout << "- Found the most optimal path to destination, checking if there adequate vehicles for the found path types..." << endl;
+            cout << "- Nasao sam najoptimalniju putanju, proveravam da li imaju odgovarajuca vozila za ovu putanju..." << endl;
 
             unordered_map<int, int> previousCity = pathSolver.getPreviousCity();
             unordered_map<int, int> pathToCity = pathSolver.getPathToPreviousCity();
@@ -102,8 +100,12 @@ void Vehicle::deliverPackages(vector<Package *> packages, vector<Vehicle *> vehi
             while (previousCity[index] != UNDEFINED) {
                 Path *path = Path::getPathById(pathToCity[index]);
 
-                cout << "\t- Checking for path '" << path->getName() << "' of type " << Path::typeToString(path->getType())
-                    << " between " << City::getCityById(index)->getName() << " and " << City::getCityById(previousCity[index])->getName() << endl;
+                cout << "\t- Proveravam put '" << path->getName() << "' tipa " << Path::typeToString(path->getType()) << " izmedju grada ";
+                City::getCityById(index)->getInfo();
+                cout << endl;
+                cout << " i grada ";
+                City::getCityById(previousCity[index])->getInfo();
+                cout << endl;
 
                 bool pathIsGood = false;
 
@@ -112,8 +114,8 @@ void Vehicle::deliverPackages(vector<Package *> packages, vector<Vehicle *> vehi
                         PathSolver vehicleSolver(vehicle->getLocatedAt(), unordered_set<Path::Type> { vehicle->getPathType() });
 
                         if (vehicleSolver.isCityReachable(index)) {
-                            cout << "\t\t- Found vehicle of path type "
-                                << Path::typeToString(vehicle->getPathType()) << " that is connected to this path!" << endl;
+                            cout << "\t\t- Nasao sam vozilo tipa "
+                                << Path::typeToString(vehicle->getPathType()) << " koji je povezan sa ovim putem!" << endl;
                             pathIsGood = true;
 
                             break;
@@ -122,8 +124,8 @@ void Vehicle::deliverPackages(vector<Package *> packages, vector<Vehicle *> vehi
                 }
 
                 if (!pathIsGood) {
-                    cout << "\t\t- No vehicle found with the path type that is connected to this path!" << endl;
-                    cout << "\t\t\t- Disabling the path and starting to calculate most optimal path again!" << endl;
+                    cout << "\t\t- Ne postoji vozilo koje je povezano sa ovim tipom puta!" << endl;
+                    cout << "\t\t\t- Iskljucujem ovu stazu iz sledeceg trazenja najoptimalnijeg puta!" << endl;
 
                     Path::getPathById(pathToCity[index])->setPathDisabled(true);
 
@@ -142,22 +144,34 @@ void Vehicle::deliverPackages(vector<Package *> packages, vector<Vehicle *> vehi
         }
 
         if (shouldSkip) {
-            cout << "- Skipping this package because it's impossible to deliver it with current vehicle selection!" << endl;
+            cout << "- Donosim zakljucak da nije moguce isporuciti ovaj paket sa ovim izborom vozila!" << endl;
 
             continue;
         } else
-            cout << "- Optimal path is okay, starting delivery..." << endl;
+            cout << "- Optimalni put je ok, pocinjem sa isporukom..." << endl;
 
-        PathSolver finalPath(package->getDestination(), unordered_set<Path::Type> {});
+        PathSolver finalPath(package->getSource(), unordered_set<Path::Type> {});
         unordered_map<int, int> previousCity = finalPath.getPreviousCity();
         unordered_map<int, int> pathToPreviousCity = finalPath.getPathToPreviousCity();
+        unordered_map<int, double> distances = finalPath.getDistances();
 
-        cout << "- Finished delivering this package!" << endl;
+        double totalPrice = 0;
+
+        startShipping(package, vehicles, package->getDestination(), previousCity, pathToPreviousCity, &totalPrice);
+
+        cout << "- Paket je stigao iz grada ";
+        City::getCityById(package->getSource())->getInfo();
+        cout << " u svoje odrediste ";
+        City::getCityById(package->getDestination())->getInfo();
+        cout << endl;
+        cout << "- Isporuka ovog paketa je zavrsena!" << endl;
+        cout << "- Ukupno je predjeno " << distances[package->getDestination()] << " km" << endl;
+        cout << "- Ukupno za naplatu je " << totalPrice << " evra" << endl;
         cout << "--------------------------------------------" << endl;
     }
 
     cout << "--------------------------------------------" << endl;
-    cout << "\t\tFinished deliveries..." << endl;
+    cout << "\t\tZavrsene su sve isporuke..." << endl;
     cout << "--------------------------------------------\n\n" << endl;
 
     for (auto &it : Path::getPaths())
@@ -170,11 +184,123 @@ const int Vehicle::getLocatedAt() const {
 
 void Vehicle::setLocatedAt(const int city) {
     if (!City::doesCityExist(city))
-        throw UnexpectedBehavior("Failed moving vehicle " + getName() + " to city id: " + to_string(locatedAt) + ", city does not exist!");
+        throw UnexpectedBehavior("Greska pri pomeranju vozila " + getName() + " u grad sa id-om: " + to_string(locatedAt) + ", grad ne postoji!");
 
     locatedAt = city;
 }
 
-const bool Vehicle::operator<(const Vehicle &other) {
-    return getMaxWeight() < other.getMaxWeight();
+void Vehicle::startShipping(Package *package, vector<Vehicle *> vehicles, const int curCity, unordered_map<int, int> previousCity, unordered_map<int, int> pathToPreviousCity, double *totalPrice) {
+    int prevCity = previousCity[curCity];
+
+    if (previousCity[prevCity] != UNDEFINED)
+        startShipping(package, vehicles, prevCity, previousCity, pathToPreviousCity, totalPrice);
+
+    Vehicle *suitableVehicle = nullptr;
+
+    for (auto *vehicle : vehicles) {
+        PathSolver pathSolver(vehicle->getLocatedAt(), unordered_set<Path::Type> {vehicle->getPathType()});
+
+        if (!pathSolver.isCityReachable(prevCity))
+            continue;
+
+        if (suitableVehicle == nullptr || suitableVehicle->getMaxWeight() < vehicle->getMaxWeight()) {
+            suitableVehicle = vehicle;
+
+            if (suitableVehicle->getMaxWeight() >= package->getWeight())
+                break;
+        }
+    }
+
+    cout << "- Paket " << package->getName() << ", tezine " << package->getWeight() << " kg, se trenutno nalazi u gradu ";
+    City::getCityById(prevCity)->getInfo();
+    cout << endl;
+    cout << "- Trenutna cena je: " << *totalPrice << " evra" << endl;
+    cout << "- Sledeca destinacija paketa je grad ";
+    City::getCityById(curCity)->getInfo();
+    cout << endl;
+    cout << "- Razdaljina izmedju ova dva grada je " << Path::getPathById(pathToPreviousCity[curCity])->getDistance()
+        << " kg i tip veze je " << Path::typeToString(suitableVehicle->getPathType()) << endl;
+    cout << "- Saljem vozilo " << suitableVehicle->getName() << " iz grada ";
+    City::getCityById(suitableVehicle->getLocatedAt())->getInfo();
+    cout << " sa maksimalnim kapacitetom " << suitableVehicle->getMaxWeight()
+        << " kg i cenom " << suitableVehicle->getPricePerKM() << " evra po km u grad ";
+    City::getCityById(prevCity)->getInfo();
+    cout << endl;
+
+
+    PathSolver pathSolver(prevCity, unordered_set<Path::Type> {});
+    unordered_map<int, int> vehiclePreviousCity = pathSolver.getPreviousCity();
+    int curLocation = suitableVehicle->getLocatedAt();
+
+    if (curLocation == prevCity) {
+        cout << "\t- Vozilo se vec nalazi u gradu ";
+        City::getCityById(prevCity)->getInfo();
+        cout << endl;
+    } else {
+        while (curLocation != prevCity) {
+            cout << "\t- Pomeram se iz grada ";
+            City::getCityById(curLocation)->getInfo();
+            cout << " u grad ";
+            City::getCityById(vehiclePreviousCity[curLocation])->getInfo();
+            cout << endl;
+            curLocation = vehiclePreviousCity[curLocation];
+        }
+
+        cout << "\t- Vozilo je stiglo u grad ";
+        City::getCityById(prevCity)->getInfo();
+        cout << endl;
+    }
+
+    double weight = package->getWeight();
+
+    if (weight <= suitableVehicle->getMaxWeight()) {
+        cout << "- Utovarujem ceo paket tezine " << weight << " kg u vozilo." << endl;
+        cout << "\t- Pomeram paket u grad: ";
+        City::getCityById(curCity)->getInfo();
+        cout << endl;
+        cout << "\t- Istovarujem paket u grad ";
+        City::getCityById(curCity)->getInfo();
+        cout << endl;
+        cout << "\t- Povecavam ukupnu cenu " << *totalPrice << " evra za "
+            << Path::getPathById(pathToPreviousCity[curCity])->getDistance() << "km * " << suitableVehicle->getPricePerKM()
+                << " = " << Path::getPathById(pathToPreviousCity[curCity])->getDistance() * suitableVehicle->getPricePerKM()
+                << " evra." << endl;
+
+        *totalPrice += Path::getPathById(pathToPreviousCity[curCity])->getDistance() * suitableVehicle->getPricePerKM();
+    } else {
+        cout << "- Paket je tezak " << weight << " kg, a maksimalni kapacitet vozila je "  << suitableVehicle->getMaxWeight()
+            << " kg. Paket mora da se preveze u nekoliko tura." << endl;
+
+        while (weight > 0) {
+            double toLoad = weight <= suitableVehicle->getMaxWeight() ? weight : suitableVehicle->getMaxWeight();
+            weight = weight - toLoad;
+
+            cout << "\t- Utovarujem " << toLoad << " kg paketa u vozilo." << endl;
+            cout << "\t- Pomeram turu u grad ";
+            City::getCityById(curCity)->getInfo();
+            cout << endl;
+            cout << "\t- Istovarujem turu u grad ";
+            City::getCityById(curCity)->getInfo();
+            cout << endl;
+
+            cout << "\t- Povecavam ukupnu cenu " << *totalPrice << " evra za "
+                 << Path::getPathById(pathToPreviousCity[curCity])->getDistance() << "km * " << suitableVehicle->getPricePerKM()
+                 << " = " << Path::getPathById(pathToPreviousCity[curCity])->getDistance() * suitableVehicle->getPricePerKM()
+                 << " evra." << endl;
+
+            *totalPrice += Path::getPathById(pathToPreviousCity[curCity])->getDistance() * suitableVehicle->getPricePerKM();
+
+            if (weight <= 0) {
+                cout << "\t- Zavrsio sam sa svim turama." << endl;
+            } else {
+                cout << "\t- Ostalo je jos " << weight << " kg paketa da se preveze." << endl;
+                cout << "\t- Pomeram se nazad u grad ";
+                City::getCityById(prevCity)->getInfo();
+                cout << endl;
+            }
+        }
+    }
+
+    suitableVehicle->setLocatedAt(curCity);
 }
+
