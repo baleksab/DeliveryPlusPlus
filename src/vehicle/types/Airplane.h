@@ -9,8 +9,8 @@
 
 class Airplane : public Vehicle {
 public:
-    Airplane(const string name, const double maxWeight, const double rentCost, const double pricePerKM, const int locatedAt)
-        :Vehicle(name, "Airplane", maxWeight, rentCost, pricePerKM, Path::Type::AIR, locatedAt) {
+    Airplane(const string name, const double maxWeight, const double pricePerKM, const int locatedAt)
+        :Vehicle(name, "Airplane", maxWeight, pricePerKM, Path::Type::AIR, locatedAt) {
 
     }
 };

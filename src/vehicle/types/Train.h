@@ -9,8 +9,8 @@
 
 class Train : public Vehicle {
 public:
-    Train(const string name, const double maxWeight, const double rentCost, const double pricePerKM, const int locatedAt)
-        :Vehicle(name, "Train", maxWeight, rentCost, pricePerKM, Path::Type::RAIL, locatedAt) {
+    Train(const string name, const double maxWeight, const double pricePerKM, const int locatedAt)
+        :Vehicle(name, "Train", maxWeight, pricePerKM, Path::Type::RAIL, locatedAt) {
 
     }
 };

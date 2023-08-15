@@ -4,8 +4,8 @@
 
 #include "Vehicle.h"
 
-Vehicle::Vehicle(const string name, const string typeName, const double maxWeight, const double rentCost, const double pricePerKM, const Path::Type pathType, const int locatedAt):Entity(name), typeName(typeName),
-    maxWeight(maxWeight), pathType(pathType), rentCost(rentCost), pricePerKM(pricePerKM), locatedAt(locatedAt) {
+Vehicle::Vehicle(const string name, const string typeName, const double maxWeight, const double pricePerKM, const Path::Type pathType, const int locatedAt):Entity(name), typeName(typeName),
+    maxWeight(maxWeight), pathType(pathType), pricePerKM(pricePerKM), locatedAt(locatedAt) {
 
     if (!City::doesCityExist(locatedAt))
         throw UnexpectedBehavior("Greska pri kreiranju vozila " + name + " u gradu sa id-om: " + to_string(locatedAt) + ", grad ne postoji!");
@@ -46,10 +46,6 @@ void Vehicle::getInfo() const {
         << "\n\t- Cena po kilometru: " << getPricePerKM() << " evra " << endl;
 }
 
-const double Vehicle::getRentCost() const {
-    return rentCost;
-}
-
 const double Vehicle::getPricePerKM() const {
     return pricePerKM;
 }
@@ -83,6 +79,10 @@ void Vehicle::deliverPackages(vector<Package *> packages, vector<Vehicle *> vehi
                     << City::getCityById(package->getDestination())->getName()
                     << " nije dostizan iz grada "
                     << City::getCityById(package->getSource())->getName();
+                cout << endl;
+
+                for (auto *vehicle : vehicles)
+                    vehicle->getInfo();
 
                 shouldSkip = true;
 
@@ -186,6 +186,18 @@ void Vehicle::setLocatedAt(const int city) {
     if (!City::doesCityExist(city))
         throw UnexpectedBehavior("Greska pri pomeranju vozila " + getName() + " u grad sa id-om: " + to_string(locatedAt) + ", grad ne postoji!");
 
+    bool adequatePathType = false;
+
+    for (auto &map : City::getCityById(locatedAt)->getConnections())
+        for (auto &id : map.second)
+            if (Path::getPathById(id)->getType() == pathType) {
+                adequatePathType = true;
+                break;
+            }
+
+    if (!adequatePathType)
+        throw UnexpectedBehavior("Greska pri pomeranju vozila " + getName() + " u grad sa id-om: " + to_string(locatedAt) + ", grad nema ni jedan put sa tipom " + Path::typeToString(pathType));
+
     locatedAt = city;
 }
 
@@ -198,6 +210,9 @@ void Vehicle::startShipping(Package *package, vector<Vehicle *> vehicles, const 
     Vehicle *suitableVehicle = nullptr;
 
     for (auto *vehicle : vehicles) {
+        if (Path::getPathById(pathToPreviousCity[curCity])->getType() != vehicle->getPathType())
+            continue;
+
         PathSolver pathSolver(vehicle->getLocatedAt(), unordered_set<Path::Type> {vehicle->getPathType()});
 
         if (!pathSolver.isCityReachable(prevCity))

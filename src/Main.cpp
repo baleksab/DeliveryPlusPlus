@@ -19,7 +19,7 @@ using namespace std;
 
 int main() {
     try {
-        /* Creating Serbia */
+        /* Pravljenje Srbije */
 
         const int SERBIA = Country::createCountry("Serbia", Country::Continent::EUROPE);
 
@@ -28,7 +28,7 @@ int main() {
         const int NOVI_SAD = City::createCity("Novi Sad", SERBIA);
         const int SUBOTICA = City::createCity("Subotica", SERBIA);
 
-        /* Creating Germany */
+        /* Pravljenje Nemacke */
 
         const int GERMANY = Country::createCountry("Germany", Country::Continent::EUROPE);
 
@@ -37,7 +37,7 @@ int main() {
         const int FRANKFURT = City::createCity("Frankfurt", GERMANY);
         const int HAMBURG = City::createCity("Hamburg", GERMANY);
 
-        /* Creating USA */
+        /* Pravljenje Amerike */
 
         const int USA = Country::createCountry("United States of America", Country::Continent::NORTH_AMERICA);
 
@@ -46,7 +46,7 @@ int main() {
         const int LOS_ANGELES = City::createCity("Los Angeles", USA);
         const int MIAMI = City::createCity("Miami", USA);
 
-        /* Connecting cities */
+        /* Povezivanje gradova */
 
         City::connectTwoCities(KRAGUJEVAC, BELGRADE, "Put preko Topole", 150, Path::Type::ROAD);
         City::connectTwoCities(KRAGUJEVAC, BELGRADE, "Autoput SRB - Sekcija 1", 130, Path::Type::ROAD);
@@ -64,16 +64,16 @@ int main() {
         City::connectTwoCities(BERLIN, HAMBURG, "Autoput Berlin - Hamburg", 150, Path::Type::ROAD);
         City::connectTwoCities(HAMBURG, NEW_YORK, "Morska linija Hamburg New York", 2300, Path::Type::WATER);
 
-        /* Listing all countries */
+        /* Izlistavanje svih drzava */
 
         for (auto &it : Country::getCountries())
             it.second->getInfo();
 
-        /* Listing all of cities Berlin is directly connected to */
+        /* Izlistavanje svih gradova sa kojim je Berlin povezan */
 
         City::getCityById(BERLIN)->getConnectionsInfo();
 
-        /* Calculating most optimal path from Kragujevac to other cities by road */
+        /* Nalazenje optimalnog puta do svih gradova sa kojim je Kragujevac povezan iskljucivo obicnim putem */
 
         unordered_set<Path::Type> includedTypes = {
                 Path::Type::ROAD
@@ -81,42 +81,46 @@ int main() {
 
         PathSolver kragujevacRoadOnly(KRAGUJEVAC, includedTypes);
 
-            /* Checking if it's possible to go to Berlin by road only */
+            /* Provera da li je moguce stici do Berlina iskljucivo putem */
 
             kragujevacRoadOnly.getPathTo(BERLIN);
 
-            /* Checking if it's possible to go to New York by road only */
+            /* Provera da li je moguce stici do Njujorka iskljucivo putem*/
 
             kragujevacRoadOnly.getPathTo(NEW_YORK);
 
-        /* Calculating most optimal path from Kragujevac to other cities by all path types */
+        /* Nalazenje optimalnog puta od Kragujevca do svih gradova bilo kojim tipom puta */
 
         includedTypes.clear(); // if filter is empty it means all path types allowed
 
         PathSolver kragujevacAll(KRAGUJEVAC, includedTypes);
 
-            /* Checking if it's possible to go to New York by all types */
+            /* Provera da li sada mozemo stici do Njujorka */
 
             kragujevacAll.getPathTo(NEW_YORK);
 
         cout << "\n\n\n" << endl;
 
-        /* Creating the vehicle fleet */
+        /* Pravimo vozila sa kojim cemo da radimo isporuke */
 
         vector<Vehicle *> vehicles;
-        vehicles.push_back(new Airplane("Avion 1", 50000, 3500, 10, BERLIN));
-        vehicles.push_back(new Ship("Brod 1", 75000, 2000, 4.5, HAMBURG));
-        vehicles.push_back(new Truck("Kamion 1", 10000, 300, 0.5, KRAGUJEVAC));
-        vehicles.push_back(new Van("Kombi 1", 1000, 100, 0.2, FRANKFURT));
-        vehicles.push_back(new Train("Voz 1", 50000, 2500, 6, LOS_ANGELES));
+        vehicles.push_back(new Airplane("Avion 1", 50000, 0.6, BERLIN));
+        vehicles.push_back(new Ship("Brod 1", 75000, 0.32, HAMBURG));
+        vehicles.push_back(new Truck("Kamion 1", 10000, 0.05, KRAGUJEVAC));
+        vehicles.push_back(new Van("Kombi 1", 1000, 0.02, FRANKFURT));
+        vehicles.push_back(new Train("Voz 1", 50000, 0.2, LOS_ANGELES));
+
+        /* Pravimo pakete koje cemo isporucivati */
 
         vector<Package *> packages;
-        packages.push_back(new Package("Wheat", 20000, BELGRADE, LOS_ANGELES));
-        packages.push_back(new Package("Building materials 1", 15000, BERLIN, LAS_VEGAS));
-        packages.push_back(new Package("Machinery", 5500, NEW_YORK, FRANKFURT));
-        packages.push_back(new Package("PC equipment", 500, MUNICH, SUBOTICA));
-        packages.push_back(new Package("Legos", 100, BELGRADE, MIAMI));
-        packages.push_back(new Package("Building materials 2", 7500, HAMBURG, KRAGUJEVAC));
+        packages.push_back(new Package("Brasno", 20000, BELGRADE, LOS_ANGELES));
+        packages.push_back(new Package("Gradjevinski materijali 1", 15000, BERLIN, LAS_VEGAS));
+        packages.push_back(new Package("Masinerija", 5500, NEW_YORK, FRANKFURT));
+        packages.push_back(new Package("Oprema za racunare", 500, MUNICH, SUBOTICA));
+        packages.push_back(new Package("Lego kocke", 100, BELGRADE, MIAMI));
+        packages.push_back(new Package("Gradjevinski materijali 2", 7500, HAMBURG, KRAGUJEVAC));
+
+        /* Zapocinjemo isporuke */
 
         Vehicle::deliverPackages(packages, vehicles);
 
