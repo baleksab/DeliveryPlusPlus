@@ -104,10 +104,10 @@ int main() {
         /* Pravimo vozila sa kojim cemo da radimo isporuke */
 
         vector<Vehicle *> vehicles;
-        vehicles.push_back(new Airplane("Avion 1", 50000, 0.6, BERLIN));
-        vehicles.push_back(new Ship("Brod 1", 75000, 0.32, HAMBURG));
-        vehicles.push_back(new Truck("Kamion 1", 10000, 0.05, KRAGUJEVAC));
-        vehicles.push_back(new Van("Kombi 1", 1000, 0.02, FRANKFURT));
+        vehicles.push_back(new Airplane("Avion 1", 50000, 1, BERLIN));
+        vehicles.push_back(new Ship("Brod 1", 75000, 0.3, HAMBURG));
+        vehicles.push_back(new Truck("Kamion 1", 3500, 0.8, KRAGUJEVAC));
+        vehicles.push_back(new Van("Kombi 1", 1000, 0.5, FRANKFURT));
         vehicles.push_back(new Train("Voz 1", 50000, 0.2, LOS_ANGELES));
 
         /* Pravimo pakete koje cemo isporucivati */

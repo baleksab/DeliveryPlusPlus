@@ -81,9 +81,6 @@ void Vehicle::deliverPackages(vector<Package *> packages, vector<Vehicle *> vehi
                     << City::getCityById(package->getSource())->getName();
                 cout << endl;
 
-                for (auto *vehicle : vehicles)
-                    vehicle->getInfo();
-
                 shouldSkip = true;
 
                 break;
@@ -159,9 +156,7 @@ void Vehicle::deliverPackages(vector<Package *> packages, vector<Vehicle *> vehi
 
         startShipping(package, vehicles, package->getDestination(), previousCity, pathToPreviousCity, &totalPrice);
 
-        cout << "- Paket je stigao iz grada ";
-        City::getCityById(package->getSource())->getInfo();
-        cout << " u svoje odrediste ";
+        cout << "- Paket je stigao iz grada u svoje odrediste ";
         City::getCityById(package->getDestination())->getInfo();
         cout << endl;
         cout << "- Isporuka ovog paketa je zavrsena!" << endl;
