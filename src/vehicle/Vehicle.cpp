@@ -70,6 +70,7 @@ void Vehicle::deliverPackages(vector<Package *> packages, vector<Vehicle *> vehi
     cout << "- Searching for packages" << endl;
 
     for (auto *package : packages) {
+        cout << "--------------------------------------------" << endl;
         cout << "- Found package: " << endl;
         cout << "\t";
         package->getInfo();
@@ -111,7 +112,7 @@ void Vehicle::deliverPackages(vector<Package *> packages, vector<Vehicle *> vehi
                         PathSolver vehicleSolver(vehicle->getLocatedAt(), unordered_set<Path::Type> { vehicle->getPathType() });
 
                         if (vehicleSolver.isCityReachable(index)) {
-                            cout << "\t\t- Found vehicle '" << vehicle->getName() << "' with path type "
+                            cout << "\t\t- Found vehicle of path type "
                                 << Path::typeToString(vehicle->getPathType()) << " that is connected to this path!" << endl;
                             pathIsGood = true;
 
@@ -147,6 +148,9 @@ void Vehicle::deliverPackages(vector<Package *> packages, vector<Vehicle *> vehi
         } else
             cout << "- Optimal path is okay, starting delivery..." << endl;
 
+        PathSolver finalPath(package->getDestination(), unordered_set<Path::Type> {});
+        unordered_map<int, int> previousCity = finalPath.getPreviousCity();
+        unordered_map<int, int> pathToPreviousCity = finalPath.getPathToPreviousCity();
 
         cout << "- Finished delivering this package!" << endl;
         cout << "--------------------------------------------" << endl;
@@ -169,4 +173,8 @@ void Vehicle::setLocatedAt(const int city) {
         throw UnexpectedBehavior("Failed moving vehicle " + getName() + " to city id: " + to_string(locatedAt) + ", city does not exist!");
 
     locatedAt = city;
+}
+
+const bool Vehicle::operator<(const Vehicle &other) {
+    return getMaxWeight() < other.getMaxWeight();
 }

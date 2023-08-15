@@ -24,6 +24,7 @@ public:
     const Path::Type getPathType() const;
     void getInfo() const;
     static void deliverPackages(vector<Package *>, vector<Vehicle *>);
+    const bool operator< (const Vehicle &other);
 protected:
     Vehicle(const string, const string, const double, const double, const double, const Path::Type, const int);
     void setLocatedAt(const int);
