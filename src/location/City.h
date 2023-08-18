@@ -25,7 +25,6 @@ public:
     void getInfo() const override;
     void getConnectionsInfo() const;
     unordered_map<int, vector<int>> getConnections() const;
-
     const bool doesConnectionExist(const int) const;
     static unordered_map<int, City *> getCities();
     static City * getCityById(const int);
@@ -35,7 +34,6 @@ public:
     static void clearCities();
 private:
     City(const string, const int);
-    ~City() = default;
 
     const int country;
     unordered_map<int, vector<int>> connections;
