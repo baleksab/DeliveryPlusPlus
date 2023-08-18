@@ -5,7 +5,7 @@
 #ifndef DELIVERY___CITY_H
 #define DELIVERY___CITY_H
 
-#include "../interface/Entity.h"
+#include "../entity/Entity.h"
 #include "Country.h"
 #include "Path.h"
 #include "../exception/UnexpectedBehaviour.h"
@@ -22,7 +22,7 @@ class Country;
 class City : public Entity {
 public:
     const int getCountry() const;
-    void getInfo() const;
+    void getInfo() const override;
     void getConnectionsInfo() const;
     unordered_map<int, vector<int>> getConnections() const;
 

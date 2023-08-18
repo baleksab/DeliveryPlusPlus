@@ -5,7 +5,7 @@ set(CMAKE_CXX_STANDARD 17)
 
 add_executable(DeliveryPlusPlus
         src/Main.cpp
-        src/interface/Entity.h
+        src/entity/Entity.h
         src/location/City.cpp
         src/location/City.h
         src/location/Country.cpp
@@ -14,7 +14,7 @@ add_executable(DeliveryPlusPlus
         src/location/Path.h
         src/location/PathSolver.cpp
         src/location/PathSolver.h
-        src/interface/Entity.cpp
+        src/entity/Entity.cpp
         src/package/Package.cpp
         src/package/Package.h
         src/vehicle/Vehicle.cpp

@@ -5,7 +5,7 @@
 #ifndef DELIVERY___PACKAGE_H
 #define DELIVERY___PACKAGE_H
 
-#include "../interface/Entity.h"
+#include "../entity/Entity.h"
 #include "../location/City.h"
 #include <iostream>
 

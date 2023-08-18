@@ -6,7 +6,7 @@
 #define DELIVERY___PATH_H
 
 #include <iostream>
-#include "../interface/Entity.h"
+#include "../entity/Entity.h"
 #include <unordered_map>
 
 using namespace std;

@@ -5,7 +5,7 @@
 #ifndef DELIVERY___VEHICLE_H
 #define DELIVERY___VEHICLE_H
 
-#include "../interface/Entity.h"
+#include "../entity/Entity.h"
 #include "../location/Path.h"
 #include "../package/Package.h"
 #include "../location/PathSolver.h"
@@ -21,7 +21,7 @@ public:
     const double getPricePerKM() const;
     const int getLocatedAt() const;
     const Path::Type getPathType() const;
-    void getInfo() const;
+    void getInfo() const override;
     static void deliverPackages(vector<Package *>, vector<Vehicle *>);
 protected:
     Vehicle(const string, const string, const double, const double, const Path::Type, const int);

@@ -5,7 +5,7 @@
 #ifndef DELIVERY___COUNTRY_H
 #define DELIVERY___COUNTRY_H
 
-#include "../interface/Entity.h"
+#include "../entity/Entity.h"
 #include "City.h"
 #include "../exception/UnexpectedBehaviour.h"
 #include <iostream>
@@ -28,13 +28,13 @@ public:
     };
 
     const Continent getContinent() const;
-    void getInfo() const;
+    void getInfo() const override;
     const vector<City *> getCities() const;
     static unordered_map<int, Country *> getCountries();
     static const Country * getCountryById(const int);
     static const int createCountry(const string, const Continent);
     static const string continentToString(const Continent);
-    static const bool doesCountryExist(const int index);
+    static const bool doesCountryExist(const int);
     static void clearCountries();
 private:
     Country(const string, const Continent);
