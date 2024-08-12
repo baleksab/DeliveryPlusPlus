@@ -1,16 +1,22 @@
 //
-// Created by C425 on 05/08/2023.
+// Created by c425 on 8/9/23.
 //
 
 #ifndef DELIVERY___COUNTRY_H
 #define DELIVERY___COUNTRY_H
 
+#include "../entity/Entity.h"
 #include "City.h"
-#include "../interfaces/IDescriptive.h"
+#include "../exception/UnexpectedBehaviour.h"
 #include <iostream>
+#include <unordered_map>
 #include <vector>
 
-class Country : public IDescriptive {
+using namespace std;
+
+class City;
+
+class Country : public Entity {
 public:
     enum Continent {
         EUROPE,
@@ -21,22 +27,22 @@ public:
         ANTARCTICA
     };
 
+    const Continent getContinent() const;
+    void getInfo() const override;
+    const vector<City *> getCities() const;
+    static unordered_map<int, Country *> getCountries();
+    static const Country * getCountryById(const int);
+    static const int createCountry(const string, const Continent);
+    static const string continentToString(const Continent);
+    static const bool doesCountryExist(const int);
+    static void clearCountries();
+private:
     Country(const string, const Continent);
 
-    Continent getContinent() const;
-    vector<City *> getCities() const;
-    void addCity(City *);
-    int getCountryID() const;
-    static vector<Country *> getCountries();
-    void displayInfo() const override;
-    static string continentToString(Continent);
-private:
     const Continent continent;
-    vector<City *> cities;
-    const int countryID;
-    static int sid;
-    static vector<Country *> countries;
-    static string continentNames[6];
+    static unordered_map<int, Country *> countries;
+    static const string continentNames[6];
 };
+
 
 #endif //DELIVERY___COUNTRY_H

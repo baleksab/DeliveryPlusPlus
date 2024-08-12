@@ -1,16 +1,17 @@
 //
-// Created by c425 on 8/8/23.
+// Created by c425 on 8/9/23.
 //
 
-#ifndef DELIVERY_PATH_H
-#define DELIVERY_PATH_H
+#ifndef DELIVERY___PATH_H
+#define DELIVERY___PATH_H
 
 #include <iostream>
-#include "../interfaces/IDescriptive.h"
+#include "../entity/Entity.h"
+#include <unordered_map>
 
 using namespace std;
 
-class Path : public IDescriptive {
+class Path : public Entity {
 public:
     enum Type {
         ROAD,
@@ -19,17 +20,26 @@ public:
         WATER
     };
 
-    Path(const string, const Type, const double);
-
     const Type getType() const;
     const double getDistance() const;
-    void displayInfo() const override;
-    static string typeToString(const Type iType);
+    void getInfo() const override;
+    void setPathDisabled(const bool);
+    const bool getPathDisabled();
+    static const string typeToString(const Type);
+    static int createPath(const string, const double, const Type);
+    static Path * getPathById(const int);
+    static unordered_map<int, Path *> getPaths();
+    static void clearPaths();
 private:
+    Path(const string, const double, const Type);
+
+    bool pathDisabled = false;
+    const string name;
     const Type type;
     const double distance;
-    static string typeName[4];
+    static const string typeName[4];
+    static unordered_map<int, Path *> paths;
 };
 
 
-#endif //DELIVERY_PATH_H
+#endif //DELIVERY___PATH_H
